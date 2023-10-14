@@ -9,7 +9,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 export default function Home() {
   return (
     <main className={styles.main}>
-    <Image src="/background.jpg" alt="paris-skyline" className={styles.backgroundImg} width={0} height={0}
+    <Image src="/paris.jpg" alt="paris-skyline" className={styles.backgroundImg} width={0} height={0}
     style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw" />
     
     <section className={styles.content}>

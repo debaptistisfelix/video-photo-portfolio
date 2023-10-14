@@ -6,7 +6,7 @@ export default function Layout({ children }) {
     return(
         <>
         <Navbar />
-        <Image src="/background.jpg" alt="paris-skyline" className={styles.backgroundImg} width={0} height={0}
+        <Image src="/paris.jpg" alt="paris-skyline" className={styles.backgroundImg} width={0} height={0}
         style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw" />
         {children}
         </>

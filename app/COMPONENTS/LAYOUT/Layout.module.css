@@ -1,4 +1,8 @@
+
+
 .backgroundImg{
+  position: absolute;
     object-fit: cover;
-    filter: blur(4px);
+    filter: brightness(60%);
+    z-index: -1;
   }
