@@ -1,0 +1,4 @@
+.backgroundImg{
+    object-fit: cover;
+    filter: blur(4px);
+  }

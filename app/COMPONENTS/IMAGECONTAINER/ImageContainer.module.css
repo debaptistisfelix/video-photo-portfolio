@@ -1,0 +1,42 @@
+.imgContainer{
+    grid-column: 250px;
+    width: 100%;
+    height: 250px;
+    border: 1px solid white;
+    justify-self: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.containedImg{
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    transition: all 0.3s ease-in-out;
+}
+
+.img{
+    border-radius: 12px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+@media (hover:hover) and (pointer:fine){
+    .imgContainer:hover .containedImg{
+        opacity: 0.75;
+    }
+}
+
+@media (max-width:500px){
+    .imgContainer{
+        grid-column: 100px;
+        
+    }
+    .containedImg{
+        width: 100px;
+        
+    }
+}
