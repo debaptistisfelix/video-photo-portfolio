@@ -13,6 +13,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "cloudinary": "^1.41.0",
     "next": "13.5.4",
     "next-cloudinary": "^4.25.0",
     "plaiceholder": "^3.0.0",

@@ -19,7 +19,7 @@ export default function Navbar() {
 
     useEffect(() => {
         if(windowWidth > 1023){
-            setIsOpen(false);
+            setIsOpen(null);
         }
     }, [windowWidth]);
 
