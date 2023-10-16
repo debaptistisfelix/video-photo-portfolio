@@ -35,7 +35,7 @@ export default function AdminGallery(results) {
         headers: {
           'Content-Type': 'application/json'
         },
-          cache: "no-cache"
+          cache: "no-store"
       });
       if(!response.ok){
         setFetchDataStates({

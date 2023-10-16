@@ -33,7 +33,7 @@ export default function UserGallery({results}) {
           headers: {
             'Content-Type': 'application/json'
           },
-            cache: "no-cache"
+            cache: "no-store"
         });
         if(!response.ok){
           setFetchDataStates({
