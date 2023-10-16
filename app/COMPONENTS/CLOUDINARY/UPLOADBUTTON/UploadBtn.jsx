@@ -14,8 +14,10 @@ export default function UploadBtn() {
       width: result.info.width,
       height: result.info.height,
       public_id: result.info.public_id,
+      url: result.info.url
     }
     setImages([newImage, ...images ]);
+    
   }
   return (
     <>
