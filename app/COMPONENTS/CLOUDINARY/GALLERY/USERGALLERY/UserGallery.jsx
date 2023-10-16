@@ -2,22 +2,37 @@
 import styles from './UserGallery.module.css'
 import { CldImage } from 'next-cloudinary';
 import ImageContainer from '../../IMGCONTAINER/ImageContainer';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useEffect } from "react";
-
+import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 
 export default function UserGallery({results}) {
     const [windowWidth, setWindowWidth] = useState(null);
+    const {imagesForUser, setImagesForUser} = useContext(AdminContext);
+    const [visibleImages, setVisibleImages] = useState([]);
+    const imagesPerPage = 30;
+    const [fullScreenState, setFullScreenState] = useState({
+      isOpen: false,
+      currentIndex: null
+    });
 
     useEffect(()=>{
         const handleWindowResize = () => setWindowWidth(window.innerWidth);
 
         handleWindowResize();
 
+        setImagesForUser(results);
+
         window.addEventListener("resize", handleWindowResize);
 
         return () => window.removeEventListener("resize", handleWindowResize);
     },[])
+
+    useEffect(()=>{
+      if(imagesForUser !== null){
+        setVisibleImages(imagesForUser.slice(0, imagesPerPage));
+      }
+    }, [imagesForUser])
 
 
     const getSizeFromWidth = () => {
@@ -30,44 +45,76 @@ export default function UserGallery({results}) {
         }
     }
 
-   /*  const maxColumns = 4;
+    const handleLoadMore = () => {
+      const currentLengthIndex = visibleImages.length;
+      const moreImages = imagesForUser.slice(currentLengthIndex, currentLengthIndex + imagesPerPage);
+      setVisibleImages([...visibleImages, ...moreImages]);
+    }
 
-    const getColumns = (colIndex)=>{
-        return results.filter((image, index)=>{
-            return index % maxColumns === colIndex;
-        });
-    } */
+    const openFullScreenMode = (image) =>{const imageIndex = visibleImages.indexOf(image);
+      setFullScreenState({
+    
+        isOpen: true,
+        currentIndex: imageIndex
+      })
+   }
+
+   const closeFullScreenMode = () =>{
+    setFullScreenState({
+   
+      isOpen: false,
+      currentIndex: null
+    })
+   }
+
+   const handleNextImage = () => {
+    if(fullScreenState.currentIndex === visibleImages.length - 1){
+      setFullScreenState({
+        isOpen: true,
+        currentIndex: 0
+      })
+    } else {
+      const nextImageIndex = fullScreenState.currentIndex + 1;
+      setFullScreenState({
+        isOpen: true,
+        currentIndex: nextImageIndex
+      })
+    }
+  }
+
+  const handlePrevImage = () => {
+    if(fullScreenState.currentIndex === 0){
+      setFullScreenState({
+        isOpen: true,
+        currentIndex: visibleImages.length - 1
+      })
+    } else {
+      const prevImageIndex = fullScreenState.currentIndex - 1;
+      setFullScreenState({
+        isOpen: true,
+        currentIndex: prevImageIndex
+      })
+    }
+  }
+
+  
+
+  
 
   return (
+    <>
     <section className={styles.gallery}
     style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
     >
-
-        {/* {
-            [
-                getColumns(0),
-                getColumns(1),
-                getColumns(2),
-                getColumns(3)
-            ].map((column, index) =>{
-                return <div key={index} className={styles.singleColumn}>
-                    {column.map((image, index) => {
-                        return<CldImage
-                        className={styles.image}
-                        key={index}
-                        width="200"
-                        height="200"
-                        style={{width: "100%", height:"auto"}}                        src={image.public_id}
-                        sizes="50vw"
-                        alt="Description of my image"
-                    />
-                    })}
-                </div>
-            })
-        } */}
-     {windowWidth !== null && results.map((image, index) => {
-        return <ImageContainer key={index} image={image} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} />
+     {windowWidth !== null && visibleImages.map((image, index) => {
+        return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
       })}
     </section>
+   {
+      imagesForUser !== null && visibleImages.length < imagesForUser.length &&
+      <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
+    }
+    </>
   )
 }

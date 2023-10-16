@@ -1,5 +1,6 @@
 import './globals.css'
-import { Inter, Montserrat } from 'next/font/google'
+import {Montserrat } from 'next/font/google'
+import AdminContextProvider from './COMPONENTS/CONTEXT/AdminContext'
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -11,7 +12,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <AdminContextProvider>
+          {children}
+        </AdminContextProvider>
+        </body>
     </html>
   )
 }

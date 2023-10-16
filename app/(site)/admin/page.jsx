@@ -9,11 +9,21 @@ export default async function Page() {
   const results = await cloudinary.v2.search
   .expression('resource_type:image')
   .sort_by('created_at','desc')
-  .max_results(15)
+  .max_results(500)
   .execute()
   .then(result=>{
     return result.resources;
   });
+
+  cloudinary.v2.api
+.resources()
+.then(result=>console.log(result.rate_limit_allowed,
+              result.rate_limit_remaining,
+              result.rate_limit_reset_at));
+
+
+
+  
 
   return (
     <main className={styles.main}>
