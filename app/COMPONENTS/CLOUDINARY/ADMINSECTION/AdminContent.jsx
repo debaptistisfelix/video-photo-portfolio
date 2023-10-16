@@ -1,16 +1,19 @@
 "use client"
 import styles from './AdminContent.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFilm, faImage} from '@fortawesome/free-solid-svg-icons';
 import AdminGallery from '../GALLERY/ADMINGALLERY/AdminGallery';
 
-export default function AdminContent({results}) {
+
+export default function AdminContent() {
     const [category, setCategory] = useState("foto");
 
     const handleCategoryChange = (categ) => {
        setCategory(categ);
     }
+
+  
 
 
   return (
@@ -28,7 +31,7 @@ export default function AdminContent({results}) {
         </div>
        </div>
         </div>  
-      {category === "foto" ? <AdminGallery results={results} />
+      {category === "foto" ? <AdminGallery/>
      : <section className={styles.categorySection}>
          <h1>VIDEO</h1>
          </section>}

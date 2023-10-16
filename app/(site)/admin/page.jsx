@@ -6,15 +6,6 @@ import cloudinary from 'cloudinary';
 
 
 export default async function Page() {
-  const results = await cloudinary.v2.search
-  .expression('resource_type:image')
-  .sort_by('created_at','desc')
-  .max_results(500)
-  .execute()
-  .then(result=>{
-    return result.resources;
-  });
-
   cloudinary.v2.api
 .resources()
 .then(result=>console.log(result.rate_limit_allowed,
@@ -23,14 +14,12 @@ export default async function Page() {
 
 
 
-  
-
   return (
     <main className={styles.main}>
       <Navbar />
       <Image src="/paris.jpg" alt="paris-skyline" className={styles.backgroundImg} width={0} height={0}
         style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw" />
-      <AdminContent results={results} />
+      <AdminContent  />
     </main>
   )
 }

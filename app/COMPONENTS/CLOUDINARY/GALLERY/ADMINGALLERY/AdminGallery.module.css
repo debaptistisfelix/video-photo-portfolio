@@ -52,6 +52,32 @@
         letter-spacing: 1px;
     }
 
+    .fetchLoading, .fetchError{
+        color: white;
+        letter-spacing: 2px;
+        font-weight: 400;
+        font-size: 16px;
+        margin: 50px auto;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    
+    .fetchLoading{
+        animation: pulse 1s infinite ease-in-out;
+    }
+    
+    @keyframes pulse {
+        0%{
+            opacity: 0.5;
+        }
+        50%{
+            opacity: 1;
+        }
+        100%{
+            opacity: 0.5;
+        }
+    }
+
     @media (hover:hover) and (pointer: fine){
         .loadMoreBtn:hover{
             background-color: rgba(255, 255, 255, 0.5);
@@ -98,6 +124,11 @@
             font-size: clamp(12px, 3.58vw + 0.12rem, 14px);
             letter-spacing: 0;
         }
+
+        .fetchLoading, .fetchError{
+            font-size: clamp(14px, 4vw + 0.12rem, 16px);
+             
+           }
 
        
     }

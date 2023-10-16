@@ -17,6 +17,49 @@ export default function AdminGallery(results) {
     isOpen: false,
     currentIndex: null
   });
+  const [fetchDataStates, setFetchDataStates] = useState({
+    success: false,
+    loading: false,
+    error:false
+  })
+
+  const fetchImages = async () => {
+    try {
+      setFetchDataStates({
+        success: false,
+        loading: true,
+        error:false
+      })
+      const response = await fetch('/api/getImages', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          cache: "no-cache"
+      });
+      if(!response.ok){
+        setFetchDataStates({
+          success: false,
+          loading: false,
+          error:true
+        })
+      }
+      const data = await response.json();
+      setFetchDataStates({
+        success: true,
+        loading: false,
+        error:false
+      })
+      setImages(data);
+    } catch (error) {
+      console.log(error)
+      setFetchDataStates({
+        success: false,
+        loading: false,
+        error:true
+      })
+    }
+  }
 
 
     useEffect(()=>{
@@ -26,7 +69,7 @@ export default function AdminGallery(results) {
 
        const handleImageLoad = () => {
         if(images === null){
-          setImages(results.results);
+          fetchImages();
         } else {
           return;
         }
@@ -142,6 +185,9 @@ export default function AdminGallery(results) {
       })}
     </div>
 
+    {fetchDataStates.loading === true && <h1 className={styles.fetchLoading}>Loading...</h1>}
+
+{fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
     {
       images !== null && visibleImages.length < images.length &&
       <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
