@@ -6,16 +6,16 @@ import { AdminContext } from "../../CONTEXT/AdminContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
+import Loader from "../../LOADER/Loader";
 
 export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage}) {
     const [photoSpans, setPhotoSpans] = useState(250);
     const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete} = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
-   /*  const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false); */
-  const fullScreenImgRef = useRef(null);
-  const fullScreenBlackContainerRef = useRef(null);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
+    const fullScreenImgRef = useRef(null);
+    const fullScreenBlackContainerRef = useRef(null);
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
 
   const imageIndex = visibleImages.indexOf(image);
 
@@ -129,10 +129,10 @@ console.log(fullScreenImageLoadedComplete)
       priority={true}
       onLoadingComplete={()=>setFullScreenImageLoadedComplete(true)}
       />
-      {fullScreenImageLoadedComplete === false && <div className={styles.fullImageLoadingDiv}>
+      {fullScreenImageLoadedComplete === false && <><Loader /> {/* <div className={styles.fullImageLoadingDiv}>
         <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
         <h1 className={styles.fullScreenLoadingText}>LOADING</h1>
-      </div>}
+      </div> */}</> }
       </div>
       <div className={styles.fullscreenNavigation}>
       <FontAwesomeIcon

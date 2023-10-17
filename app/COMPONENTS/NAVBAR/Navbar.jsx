@@ -2,6 +2,8 @@
 import styles from './Navbar.module.css';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import NavBarLogo from "@/public/shutter.png"
+import Image from 'next/image';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(null);
@@ -45,6 +47,10 @@ export default function Navbar() {
 
 </div>
 
+{<Link href="/" className={styles.logoLink}>
+<Image src={NavBarLogo} alt="logo" className={styles.logo} width={35} height={35} />
+</Link>}
+
 <div onClick={toggle} className={styles.hamburgerIcon}>
     <div className={` ${styles.bar} ${isOpen && styles.bar1}`}></div>
     <div className={` ${styles.bar} ${isOpen && styles.bar2}`}></div>
@@ -53,7 +59,6 @@ export default function Navbar() {
 
 
 <div className={`${styles.mobileNavLinkContainer} ${isOpen === true && styles.mobileNavAppears} ${isOpen === false && styles.mobileNavDisappears}`}>
-    <Link href="/" className={styles.mobileNavLink}>Home</Link>
     <Link href="/video" className={styles.mobileNavLink}>Video</Link>
     <Link href="/foto" className={styles.mobileNavLink}>Foto</Link>
     </div>

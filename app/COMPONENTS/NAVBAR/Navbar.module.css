@@ -37,6 +37,14 @@ height: 100%;
     gap: 30px;
 }
 
+.logoLink{
+    display: none;
+}
+
+.logo{
+    display: none;
+}
+
 
 .hamburgerIcon {
    display: none;
@@ -83,6 +91,7 @@ height: 100%;
 
     .desktopNavbarContainer{
         height: 80px;
+      
         min-height: 80px;
       /*   left: 0;
         transform: translate(0,0); */
@@ -90,6 +99,25 @@ height: 100%;
 
     .navLink{
         display: none;
+    }
+
+    .logoLink{
+        display: inline-block;
+    }
+
+    .logoLink{
+        width: fit-content;
+        height: fit-content;
+        margin-right: auto;
+        z-index: 4;
+    }
+
+    .logo{
+        display: block;
+      
+        border-radius: 50%;
+        overflow: hidden;
+     
     }
     .hamburgerIcon {
         display: inline-block;

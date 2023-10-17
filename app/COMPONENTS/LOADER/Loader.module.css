@@ -1,0 +1,58 @@
+.loader{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 8px solid rgba(255, 255, 255, 0.5);
+}
+
+.loaderImg{
+    margin-left: 2px;
+    opacity: 0.5;
+    animation: cameraShutterOpening 1.25s infinite ease-in-out;
+}
+
+@keyframes cameraShutterOpening{
+    0%{
+        transform: scale(1)
+    }
+    20%{
+        transform: scale(1)
+    }
+    40%{
+        transform: scale(1.1) rotate(50deg)
+    }
+    60%{
+        transform: scale(1.1) rotate(50deg)
+    }
+    80%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+@media (max-width:500px) and (hover:none) and (pointer: coarse){
+    .loader{
+    
+        width: clamp(60px, 20.72vw + 0.12rem, 70px);
+        height:  clamp(60px, 20.72vw + 0.12rem, 70px);
+  
+        border: 8px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .loaderImg{
+        margin-left: 1px;
+        width:  clamp(60px, 20.72vw + 0.12rem, 70px);
+        height: clamp(60px, 20.72vw + 0.12rem, 70px);
+      
+    }
+}
+    
