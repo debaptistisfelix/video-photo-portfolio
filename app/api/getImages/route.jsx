@@ -1,4 +1,6 @@
 import cloudinary from 'cloudinary';
+export const dynamic = 'force-dynamic';
+
 
 export  async function GET(req) {
    try {
@@ -10,6 +12,9 @@ export  async function GET(req) {
     .then(result=>{
       return result.resources;
     });
+
+    req.headers.set('Cache-Control', 'no-store');
+
     return new Response(JSON.stringify(results), {status: 200})
    } catch (error) {
     console.log(error)
