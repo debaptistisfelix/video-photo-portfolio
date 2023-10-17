@@ -5,7 +5,7 @@ import { CldImage } from 'next-cloudinary';
 import ImageContainer from '../../IMGCONTAINER/ImageContainer';
 import { useState, useEffect, useContext } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
-
+import Loader from '@/app/COMPONENTS/LOADER/Loader';
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
@@ -19,7 +19,7 @@ export default function AdminGallery(results) {
   });
   const [fetchDataStates, setFetchDataStates] = useState({
     success: false,
-    loading: false,
+    loading: true,
     error:false
   })
 
@@ -45,12 +45,13 @@ export default function AdminGallery(results) {
         })
       }
       const data = await response.json();
+    
+      setImages(data);
       setFetchDataStates({
         success: true,
         loading: false,
         error:false
       })
-      setImages(data);
     } catch (error) {
       console.log(error)
       setFetchDataStates({
@@ -196,7 +197,10 @@ export default function AdminGallery(results) {
       })}
     </div>
 
-    {fetchDataStates.loading === true && <h1 className={styles.fetchLoading}>Loading...</h1>}
+    {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
+  <Loader />
+  <h1 className={styles.fetchLoading}>Loading</h1>
+  </div>}
 
 {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
     {

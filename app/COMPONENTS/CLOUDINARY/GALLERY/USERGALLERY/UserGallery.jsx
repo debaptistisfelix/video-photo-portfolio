@@ -5,6 +5,7 @@ import ImageContainer from '../../IMGCONTAINER/ImageContainer';
 import { useState, useContext } from "react";
 import { useEffect } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
+import Loader from '@/app/COMPONENTS/LOADER/Loader';
 
 export default function UserGallery() {
     const [windowWidth, setWindowWidth] = useState(null);
@@ -17,7 +18,7 @@ export default function UserGallery() {
     });
     const [fetchDataStates, setFetchDataStates] = useState({
       success: false,
-      loading: false,
+      loading: true,
       error:false
     })
 
@@ -67,7 +68,7 @@ export default function UserGallery() {
 
         fetchImages();
 
-      /*   setImagesForUser(results); */
+  
 
         window.addEventListener("resize", handleWindowResize);
 
@@ -173,7 +174,10 @@ export default function UserGallery() {
       <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
     }
 
-{fetchDataStates.loading === true && <h1 className={styles.fetchLoading}>Loading...</h1>}
+{fetchDataStates.loading === true && <div className={styles.loaderContainer}>
+  <Loader />
+  <h1 className={styles.fetchLoading}>Loading</h1>
+  </div>}
 
 {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
     </>

@@ -1,19 +1,12 @@
-import styles from './Loader.module.css';
-import Image from 'next/image';
-import ShutterImg from "@/public/shutter.png"
-
-export default function Loader() {
-  return (
-        <div className={styles.loader}>
-        {/* <Image src={ShutterImg} width={80} height={80} alt="loader-icon" priority={true} quality={80}
-        className={styles.loaderImg} size="80px"
-         /> */}
-           <svg className={styles.loaderImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000"
  preserveAspectRatio="xMidYMid meet">
 
 <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)"
-fill="#ffffff" stroke="none">
+fill="#000000" stroke="none">
 <path d="M245 631 c-68 -17 -175 -87 -175 -115 0 -20 81 -156 90 -151 5 3 114
 188 157 268 5 9 -31 8 -72 -2z"/>
 <path d="M318 566 c-22 -39 -43 -74 -45 -78 -2 -5 68 -8 156 -8 104 0 161 4
@@ -28,7 +21,3 @@ l-12 42 -89 0 c-50 0 -90 -3 -90 -7z"/>
 65 22 39 43 74 45 79 2 4 -68 7 -156 7 -104 0 -161 -4 -161 -10z"/>
 </g>
 </svg>
-    </div>
-
-  )
-}

@@ -129,10 +129,11 @@ console.log(fullScreenImageLoadedComplete)
       priority={true}
       onLoadingComplete={()=>setFullScreenImageLoadedComplete(true)}
       />
-      {fullScreenImageLoadedComplete === false && <><Loader /> {/* <div className={styles.fullImageLoadingDiv}>
+      {fullScreenImageLoadedComplete === false && <>  <div className={styles.fullImageLoadingDiv}>
         <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
-        <h1 className={styles.fullScreenLoadingText}>LOADING</h1>
-      </div> */}</> }
+        {/* <h1 className={styles.fullScreenLoadingText}>LOADING</h1> */}
+       {/*  <Loader /> */}
+      </div> </> }
       </div>
       <div className={styles.fullscreenNavigation}>
       <FontAwesomeIcon
