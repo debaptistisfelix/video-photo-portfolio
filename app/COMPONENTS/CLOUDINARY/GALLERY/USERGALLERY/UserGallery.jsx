@@ -180,6 +180,7 @@ export default function UserGallery() {
   </div>}
 
 {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
+
     </>
   )
 }

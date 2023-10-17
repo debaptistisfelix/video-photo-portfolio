@@ -26,7 +26,11 @@
         font-weight: 600;
         color: white;
     }
-
+    
+    .btnContainer{
+        display: flex;
+        gap: 20px;
+    }
 
     .imagesGallery{
         width: 100%;
@@ -88,9 +92,69 @@
         }
     }
 
+
+
+
+    .modal{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px 2px rgba(0,0,0,0.35);
+        width: 300px;
+        border-radius: 20px;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+    }
+
+    .removeParag{
+        font-size: 16px;
+        font-weight: 400;
+       width: 90%;
+        text-align: center;
+        color: gray
+      
+    }
+
+    .removeBtnContainer{
+        display: flex;
+        gap: 20px;
+        width: 90%;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .cancelBtn, .confirmBtn{
+        padding: 10px 20px;
+        border-radius: 20px;
+        height: 42px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid gray;
+  
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        color:gray;
+    }
+
+
+
     @media (hover:hover) and (pointer: fine){
         .loadMoreBtn:hover{
             background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cancelBtn:hover, .confirmBtn:hover{
+            background-color: gray;
+            color: white;
         }
     }
    
@@ -123,11 +187,18 @@
         .categoryNav{
             width: 100%;
             border: none;
+            flex-direction: column;
+            gap: 20px;
             padding-bottom:0px ;
         }
 
         .bannerTitle{
             font-size: clamp(16px, 4.72vw + 0.12rem, 18px);
+        }
+
+        .btnContainer{
+            width: 100%;
+            justify-content: center;
         }
 
         .loadMoreBtn{

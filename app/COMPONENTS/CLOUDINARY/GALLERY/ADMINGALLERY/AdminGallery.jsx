@@ -6,10 +6,12 @@ import ImageContainer from '../../IMGCONTAINER/ImageContainer';
 import { useState, useEffect, useContext } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
+import { usePathname } from 'next/navigation';
+import RemoveBtn from '../../REMOVEBTN/RemoveBtn';
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
-  const {images, setImages, setFullScreenImageLoadedComplete} = useContext(AdminContext);
+  const {images, setImages, setFullScreenImageLoadedComplete, checkedCheckboxes, setCheckedCheckboxes, isRemovingImages, setIsRemovingImages} = useContext(AdminContext);
   const [visibleImages, setVisibleImages] = useState([]);
   const imagesPerPage = 30;
   const [currentLength, setCurrentLength] = useState(null);
@@ -22,6 +24,9 @@ export default function AdminGallery(results) {
     loading: true,
     error:false
   })
+  const pathname = usePathname();
+
+
 
   const fetchImages = async () => {
     try {
@@ -45,7 +50,6 @@ export default function AdminGallery(results) {
         })
       }
       const data = await response.json();
-    
       setImages(data);
       setFetchDataStates({
         success: true,
@@ -180,33 +184,64 @@ export default function AdminGallery(results) {
     }
   }
 
+
+  const handleCheckboxChange = (isChecked, imageId) => {
+    if (isChecked) {
+      setCheckedCheckboxes((prevCheckeds) =>{
+        return [...prevCheckeds, imageId]
+      });
+    } else {
+      setCheckedCheckboxes((prevCheckeds) =>{
+        return prevCheckeds.filter((prevChecked) => prevChecked !== imageId);
+      });
+    }
+  };
+
+
+
+  console.log(checkedCheckboxes)
+
   return (
+    <>
     <section className={styles.categorySection}>
 
-    <div className={styles.categoryNav}>
-    <h1 className={styles.bannerTitle}>GALLERIA FOTO</h1>
-    <UploadBtn />
-    </div>
+<div className={styles.categoryNav}>
+<h1 className={styles.bannerTitle}>GALLERIA FOTO</h1>
+<div className={styles.btnContainer}>
+ {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
+<UploadBtn />
+</div>
+</div>
 
-    <div className={styles.imagesGallery}
-    style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
-    >
-      {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
-        return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
-      })}
-    </div>
+<div className={styles.imagesGallery}
+style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
+>
+  {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
+    return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+    handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} />
+  })}
+</div>
 
-    {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
-  <Loader />
-  <h1 className={styles.fetchLoading}>Loading</h1>
-  </div>}
+{fetchDataStates.loading === true && <div className={styles.loaderContainer}>
+<Loader />
+<h1 className={styles.fetchLoading}>Loading</h1>
+</div>}
 
 {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
-    {
-      images !== null && visibleImages.length < images.length &&
-      <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
-    }
-  </section>
+{
+  images !== null && visibleImages.length < images.length &&
+  <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
+}
+</section>
+{
+  isRemovingImages === true && <section className={styles.modal}>
+  <p className={styles.removeParag}>Eliminare queste immagini da Cloudinary?</p>
+  <div className={styles.removeBtnContainer}>
+    <div onClick={()=>{setIsRemovingImages(false)}} className={styles.cancelBtn}>Annulla</div>
+    <div className={styles.confirmBtn}>Conferma</div>
+  </div>
+</section>
+}
+</>
   )
 }

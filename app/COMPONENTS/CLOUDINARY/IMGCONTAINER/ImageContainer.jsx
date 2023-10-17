@@ -7,15 +7,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
 import Loader from "../../LOADER/Loader";
+import CheckBox from "../../CHECKBOX/CheckBox";
 
-export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage}) {
+export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage, isAdminPage, onCheckboxChange}) {
     const [photoSpans, setPhotoSpans] = useState(250);
-    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete} = useContext(AdminContext);
+    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete, } = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
     const fullScreenImgRef = useRef(null);
     const fullScreenBlackContainerRef = useRef(null);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked);
+      onCheckboxChange(!isChecked, image.public_id);
+    };
 
   const imageIndex = visibleImages.indexOf(image);
 
@@ -88,7 +95,7 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       }
     }, [touchEnd])
 
-console.log(fullScreenImageLoadedComplete)
+
 
   return (
     <>
@@ -110,7 +117,7 @@ console.log(fullScreenImageLoadedComplete)
         <FontAwesomeIcon icon={faImage} className={styles.loadingIcon} />
         <h1 className={styles.loadingText}>LOADING</h1>
       </div>}
-      
+      {imageLoadedComplete === true && isAdminPage === true && <CheckBox onChange={handleCheckboxChange} />}
     </div>
     {fullScreenState.isOpen === true &&  <>
       <div
@@ -131,8 +138,6 @@ console.log(fullScreenImageLoadedComplete)
       />
       {fullScreenImageLoadedComplete === false && <>  <div className={styles.fullImageLoadingDiv}>
         <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
-        {/* <h1 className={styles.fullScreenLoadingText}>LOADING</h1> */}
-       {/*  <Loader /> */}
       </div> </> }
       </div>
       <div className={styles.fullscreenNavigation}>
