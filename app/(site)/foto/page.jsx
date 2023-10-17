@@ -7,11 +7,6 @@ import addBlurredDataUrls from '@/lib/getBase64';
 
 export default async function Page() {
 
- 
-
-  
-
-
   return (
     <main className={styles.main}>
       <Navbar />

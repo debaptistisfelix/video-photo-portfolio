@@ -8,7 +8,7 @@ import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 
 export default function UserGallery() {
     const [windowWidth, setWindowWidth] = useState(null);
-    const {imagesForUser, setImagesForUser} = useContext(AdminContext);
+    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete} = useContext(AdminContext);
     const [visibleImages, setVisibleImages] = useState([]);
     const imagesPerPage = 30;
     const [fullScreenState, setFullScreenState] = useState({
@@ -97,9 +97,9 @@ export default function UserGallery() {
       setVisibleImages([...visibleImages, ...moreImages]);
     }
 
-    const openFullScreenMode = (image) =>{const imageIndex = visibleImages.indexOf(image);
+    const openFullScreenMode = (imageIndex) =>{
+      setFullScreenImageLoadedComplete(false);
       setFullScreenState({
-    
         isOpen: true,
         currentIndex: imageIndex
       })
@@ -107,13 +107,14 @@ export default function UserGallery() {
 
    const closeFullScreenMode = () =>{
     setFullScreenState({
-   
       isOpen: false,
       currentIndex: null
     })
+    setFullScreenImageLoadedComplete(false);
    }
 
    const handleNextImage = () => {
+    setFullScreenImageLoadedComplete(false);
     if(fullScreenState.currentIndex === visibleImages.length - 1){
       setFullScreenState((prevState)=>{
         return {
@@ -133,6 +134,7 @@ export default function UserGallery() {
   }
 
   const handlePrevImage = () => {
+    setFullScreenImageLoadedComplete(false);
     if(fullScreenState.currentIndex === 0){
       setFullScreenState((prevState)=>{
         return {

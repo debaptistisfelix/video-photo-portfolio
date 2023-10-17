@@ -9,7 +9,7 @@ import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
-  const {images, setImages} = useContext(AdminContext);
+  const {images, setImages, setFullScreenImageLoadedComplete} = useContext(AdminContext);
   const [visibleImages, setVisibleImages] = useState([]);
   const imagesPerPage = 30;
   const [currentLength, setCurrentLength] = useState(null);
@@ -122,6 +122,7 @@ export default function AdminGallery(results) {
 
 
    const openFullScreenMode = (imageIndex) =>{
+    setFullScreenImageLoadedComplete(false);
       setFullScreenState({
         isOpen: true,
         currentIndex: imageIndex
@@ -129,6 +130,7 @@ export default function AdminGallery(results) {
    }
 
    const closeFullScreenMode = () =>{
+    setFullScreenImageLoadedComplete(false);
     setFullScreenState({
    
       isOpen: false,
@@ -138,6 +140,7 @@ export default function AdminGallery(results) {
 
 
   const handleNextImage = () => {
+    setFullScreenImageLoadedComplete(false);
     if(fullScreenState.currentIndex === visibleImages.length - 1){
       setFullScreenState((prevState)=>{
         return {
@@ -157,6 +160,7 @@ export default function AdminGallery(results) {
   }
 
   const handlePrevImage = () => {
+    setFullScreenImageLoadedComplete(false);
     if(fullScreenState.currentIndex === 0){
       setFullScreenState((prevState)=>{
         return {

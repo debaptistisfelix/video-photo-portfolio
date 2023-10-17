@@ -214,6 +214,13 @@
     .fullscreenNavigation{
         display: none;
     }
+
+  
+
+    
+    .fullScreenLoadingText{
+        font-size: clamp(14px, 4vw + 0.12rem, 18px);
+    }
 }
 
 @media (min-width:501px) and (hover:none) and (pointer: coarse) {

@@ -1,5 +1,4 @@
 import cloudinary from 'cloudinary';
-import addBlurredDataUrls from '@/lib/getBase64';
 export const dynamic = 'force-dynamic';
 
 
@@ -14,11 +13,9 @@ export  async function GET(req) {
       return result.resources;
     });
 
-    const imagesWithBlurredDataUrl = await addBlurredDataUrls(results);
-
     req.headers.set('Cache-Control', 'no-store');
 
-    return new Response(JSON.stringify(imagesWithBlurredDataUrl), {status: 200})
+    return new Response(JSON.stringify(results), {status: 200})
    } catch (error) {
     console.log(error)
     return new Response(JSON.stringify("Error while fetching images"), {status: 500})

@@ -9,16 +9,15 @@ import Image from 'next/image';
 
 export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage}) {
     const [photoSpans, setPhotoSpans] = useState(250);
-    const {images} = useContext(AdminContext);
+    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete} = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
-    const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false);
+   /*  const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false); */
   const fullScreenImgRef = useRef(null);
   const fullScreenBlackContainerRef = useRef(null);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
   const imageIndex = visibleImages.indexOf(image);
-
 
     useEffect(()=>{
       // Close full screen mode if user clicks outside of image
@@ -89,7 +88,7 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       }
     }, [touchEnd])
 
-
+console.log(fullScreenImageLoadedComplete)
 
   return (
     <>
@@ -127,13 +126,13 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       width={0}
       height={0}
       sizes="100vw"
-      quality={100}
       priority={true}
-      placeholder={visibleImages[fullScreenState.currentIndex].blurredDataUrl ? "blur" : "empty"}
-      blurDataURL={visibleImages[fullScreenState.currentIndex].blurredDataUrl}
-
+      onLoadingComplete={()=>setFullScreenImageLoadedComplete(true)}
       />
-   
+      {fullScreenImageLoadedComplete === false && <div className={styles.fullImageLoadingDiv}>
+        <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
+        <h1 className={styles.fullScreenLoadingText}>LOADING</h1>
+      </div>}
       </div>
       <div className={styles.fullscreenNavigation}>
       <FontAwesomeIcon
