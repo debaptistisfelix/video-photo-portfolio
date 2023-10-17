@@ -3,9 +3,15 @@ import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
 import Image from 'next/image';
 import cloudinary from 'cloudinary';
 import UserGallery from '@/app/COMPONENTS/CLOUDINARY/GALLERY/USERGALLERY/UserGallery';
-
+import addBlurredDataUrls from '@/lib/getBase64';
 
 export default async function Page() {
+
+ 
+
+  
+
+
   return (
     <main className={styles.main}>
       <Navbar />
@@ -13,7 +19,7 @@ export default async function Page() {
         style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw" />
       <section className={styles.content}>
         <h1 className={styles.title}>Galleria Foto</h1>
-        <UserGallery  />
+        <UserGallery   />
         </section>
     </main>
   )

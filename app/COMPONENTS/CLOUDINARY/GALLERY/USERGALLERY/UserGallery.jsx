@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import { useEffect } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 
-export default function UserGallery({results}) {
+export default function UserGallery() {
     const [windowWidth, setWindowWidth] = useState(null);
     const {imagesForUser, setImagesForUser} = useContext(AdminContext);
     const [visibleImages, setVisibleImages] = useState([]);
@@ -20,6 +20,7 @@ export default function UserGallery({results}) {
       loading: false,
       error:false
     })
+
 
     const fetchImages = async () => {
       try {
@@ -43,12 +44,12 @@ export default function UserGallery({results}) {
           })
         }
         const data = await response.json();
+        setImagesForUser(data);
         setFetchDataStates({
           success: true,
           loading: false,
           error:false 
         })
-        setImagesForUser(data);
       } catch (error) {
         console.log(error)
         setFetchDataStates({
@@ -114,35 +115,41 @@ export default function UserGallery({results}) {
 
    const handleNextImage = () => {
     if(fullScreenState.currentIndex === visibleImages.length - 1){
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: 0
+      setFullScreenState((prevState)=>{
+        return {
+          ...prevState,
+          currentIndex: 0
+        }
       })
     } else {
       const nextImageIndex = fullScreenState.currentIndex + 1;
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: nextImageIndex
+      setFullScreenState((prevState)=>{
+        return {
+          ...prevState,
+          currentIndex: nextImageIndex
+        }
       })
     }
   }
 
   const handlePrevImage = () => {
     if(fullScreenState.currentIndex === 0){
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: visibleImages.length - 1
-      })
+      setFullScreenState((prevState)=>{
+        return {
+          ...prevState,
+          currentIndex: visibleImages.length - 1
+    }})
     } else {
       const prevImageIndex = fullScreenState.currentIndex - 1;
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: prevImageIndex
+      setFullScreenState((prevState)=>{
+        return {
+          ...prevState,
+          currentIndex: prevImageIndex
+        }
       })
     }
   }
 
-  
 
   
 

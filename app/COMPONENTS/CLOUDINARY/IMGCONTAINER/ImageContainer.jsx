@@ -11,10 +11,13 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     const [photoSpans, setPhotoSpans] = useState(250);
     const {images} = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
+    const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false);
   const fullScreenImgRef = useRef(null);
   const fullScreenBlackContainerRef = useRef(null);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+
+  const imageIndex = visibleImages.indexOf(image);
 
 
     useEffect(()=>{
@@ -84,7 +87,7 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       if(fullScreenState.isOpen === true){
         handleSwipe()
       }
-    }, [touchStart, touchEnd])
+    }, [touchEnd])
 
 
 
@@ -94,7 +97,7 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     style={{ gridRow: `span ${photoSpans}`, width: `${getSizeFromWidth()}px` }}
     className={styles.imgContainer}>
         <CldImage
-        onClick={() =>{openFullScreenMode(image)}}
+        onClick={() =>{openFullScreenMode(imageIndex)}}
         className={`${styles.image} ${imageLoadedComplete === true && styles.showImage}`}
         width={image.width}
         height={image.height}
@@ -124,7 +127,13 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       width={0}
       height={0}
       sizes="100vw"
+      quality={100}
+      priority={true}
+      placeholder={visibleImages[fullScreenState.currentIndex].blurredDataUrl ? "blur" : "empty"}
+      blurDataURL={visibleImages[fullScreenState.currentIndex].blurredDataUrl}
+
       />
+   
       </div>
       <div className={styles.fullscreenNavigation}>
       <FontAwesomeIcon
