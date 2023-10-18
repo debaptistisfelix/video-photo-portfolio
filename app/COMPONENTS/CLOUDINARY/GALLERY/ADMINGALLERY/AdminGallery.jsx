@@ -21,7 +21,7 @@ export default function AdminGallery(results) {
   });
   const [fetchDataStates, setFetchDataStates] = useState({
     success: false,
-    loading: true,
+    loading: false,
     error:false
   })
   const pathname = usePathname();
@@ -117,7 +117,7 @@ export default function AdminGallery(results) {
 
     const getSizeFromWidth = () => {
         if(windowWidth <= 500){
-            return "100";
+            return "150";
         } else if(windowWidth > 500 && windowWidth <= 800){
             return "150";
         } else if(windowWidth > 800){

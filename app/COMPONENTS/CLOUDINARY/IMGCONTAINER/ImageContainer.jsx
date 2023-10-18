@@ -17,8 +17,6 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     const fullScreenBlackContainerRef = useRef(null);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
-    const [touchStartTime, setTouchStartTime] = useState(null);
-    const longPressDuration = 1000;
     const [isChecked, setIsChecked] = useState(false);
 
     const handleCheckboxChange = () => {
@@ -102,33 +100,6 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     }, [touchEnd])
 
 
-    // pressing image for 3 seconds will toggle isChecked
-    const handlePressStart = () => {
-      setTouchStartTime(Date.now()); // Record the start time
-    };
-
-    const handlePressEnd = () => {
-      const touchEndTime = Date.now(); // Record the end time
-      const touchDuration = touchEndTime - touchStartTime; // Calculate the touch duration
-  
-      // Check if the touch duration is greater than the long press duration
-      if (touchDuration >= longPressDuration) {
-        // Toggle the isChecked state
-        handleCheckboxChange();
-      }
-    }
-
-    const handleImageClickBasedOnSituation = () => {
-      console.log("running")
-      if(checkedCheckboxes.length === 0){
-        console.log("empty")
-       
-        openFullScreenMode(imageIndex)
-      } else if(checkedCheckboxes.length > 0){
-        handleCheckboxChange();
-      }
-    }
-
  
 
 
@@ -136,8 +107,7 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
   return (
     <>
     <div
-    onTouchStart={handlePressStart}
-    onTouchEnd={handlePressEnd}
+ 
     style={{ gridRow: `span ${photoSpans}`, width: `${getSizeFromWidth()}px` }}
     className={styles.imgContainer}>
         <CldImage
