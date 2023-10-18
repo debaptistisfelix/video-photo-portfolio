@@ -8,6 +8,9 @@ import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
 import { usePathname } from 'next/navigation';
 import RemoveBtn from '../../REMOVEBTN/RemoveBtn';
+import toast, { Toaster } from 'react-hot-toast';
+
+
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
@@ -24,6 +27,11 @@ export default function AdminGallery(results) {
     loading: false,
     error:false
   })
+  const [removingLoadingState, setRemovingLoadingState] = useState({
+    success: false,
+    loading: false,
+  });
+
   const pathname = usePathname();
 
 
@@ -66,6 +74,62 @@ export default function AdminGallery(results) {
     }
   }
 
+  const notify = (text, status) => toast(<>{text}</>, {
+    style:{
+        backgroundColor: status === "success" ? "white" : "red",
+        color: status === "success" ? "gray" : "white",
+    }
+   });
+
+  const removeImages = async () => {
+    setIsRemovingImages(false);
+    setRemovingLoadingState({
+      loading: true,
+      success: false,
+    })
+    try {
+      const response = await fetch('/api/removeImages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          imagesPublicIds: checkedCheckboxes
+        })
+      })
+      if(!response.ok){
+        console.log("Error while removing images")
+        setRemovingLoadingState({
+          loading: false,
+          success: false,
+        })
+        notify("Errore durante l'eliminazione delle immagini", "error")
+      } else {
+        const data = await response.json();
+      console.log(data)
+      setCheckedCheckboxes([]);
+      setImages((prevImages =>{
+        return prevImages.filter((prevImage) => !checkedCheckboxes.includes(prevImage.public_id))
+      }))
+      setRemovingLoadingState({
+        loading: false,
+        success: true,
+   
+      })
+      notify("Immagini eliminate con successo", "success")
+      }
+    } catch (error) {
+      console.log(error)
+      setRemovingLoadingState({
+        loading: false,
+        success: false,
+      })
+      notify("Errore durante l'eliminazione delle immagini", "error")
+    }
+  }
+
+
+
 
     useEffect(()=>{
         const handleWindowResize = () => setWindowWidth(window.innerWidth);
@@ -82,12 +146,21 @@ export default function AdminGallery(results) {
 
        handleImageLoad();
 
-
-
         window.addEventListener("resize", handleWindowResize);
-
         return () => window.removeEventListener("resize", handleWindowResize);
     },[])
+
+
+
+    const getSizeFromWidth = () => {
+      if(windowWidth <= 500){
+          return "150";
+      } else if(windowWidth > 500 && windowWidth <= 800){
+          return "150";
+      } else if(windowWidth > 800){
+          return "250";
+      }
+  }
 
     useEffect(()=>{
       getSizeFromWidth();
@@ -115,15 +188,7 @@ export default function AdminGallery(results) {
       setVisibleImages([...visibleImages, ...moreImages]);
     }
 
-    const getSizeFromWidth = () => {
-        if(windowWidth <= 500){
-            return "150";
-        } else if(windowWidth > 500 && windowWidth <= 800){
-            return "150";
-        } else if(windowWidth > 800){
-            return "250";
-        }
-    }
+   
 
 
    const openFullScreenMode = (imageIndex) =>{
@@ -200,49 +265,56 @@ export default function AdminGallery(results) {
 
 
 
-  console.log(checkedCheckboxes)
+
 
   return (
     <>
     <section className={styles.categorySection}>
 
-<div className={styles.categoryNav}>
-<h1 className={styles.bannerTitle}>GALLERIA FOTO</h1>
-<div className={styles.btnContainer}>
- {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
-<UploadBtn />
-</div>
-</div>
+      <div className={styles.categoryNav}>
+      <h1 className={styles.bannerTitle}>GALLERIA FOTO</h1>
+      <div className={styles.btnContainer}>
+      {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
+      <UploadBtn />
+      </div>
+      </div>
 
-<div className={styles.imagesGallery}
-style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
->
-  {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
-    return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-    handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} checkedCheckboxes={checkedCheckboxes} />
-  })}
-</div>
+      <div className={styles.imagesGallery}
+      style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
+      >
+      {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
+        return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} checkedCheckboxes={checkedCheckboxes} />
+      })}
+      </div>
 
-{fetchDataStates.loading === true && <div className={styles.loaderContainer}>
-<Loader />
-<h1 className={styles.fetchLoading}>Loading</h1>
-</div>}
+      {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
+      <Loader />
+      <h1 className={styles.fetchLoading}>Loading</h1>
+      </div>}
 
-{fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
-{
-  images !== null && visibleImages.length < images.length &&
-  <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
-}
-</section>
-{
-  isRemovingImages === true && <section className={styles.modal}>
-  <p className={styles.removeParag}>Eliminare queste immagini da Cloudinary?</p>
-  <div className={styles.removeBtnContainer}>
-    <div onClick={()=>{setIsRemovingImages(false)}} className={styles.cancelBtn}>Annulla</div>
-    <div className={styles.confirmBtn}>Conferma</div>
-  </div>
-</section>
-}
-</>
-  )
-}
+      {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
+      {
+        images !== null && visibleImages.length < images.length &&
+        <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
+      }
+      </section>
+      {
+        isRemovingImages === true && <section className={styles.modal}>
+        <p className={styles.removeParag}>Eliminare queste immagini da Cloudinary?</p>
+        <div className={styles.removeBtnContainer}>
+          <div onClick={()=>{setIsRemovingImages(false)}} className={styles.cancelBtn}>Annulla</div>
+          <div
+          onClick={removeImages}
+          className={styles.confirmBtn}>Conferma</div>
+        </div>
+      </section>
+      }
+      {
+        removingLoadingState.loading === true && <div className={styles.removingImagesLoaderContainer}>
+        <Loader />
+        </div>
+      }
+      </>
+      )
+    }

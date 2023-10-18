@@ -17,12 +17,15 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     const fullScreenBlackContainerRef = useRef(null);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
-    const [isChecked, setIsChecked] = useState(false);
+  
 
     const handleCheckboxChange = () => {
-      setIsChecked(!isChecked);
       onCheckboxChange(!isChecked, image.public_id);
     };
+
+    const isChecked = checkedCheckboxes.includes(image.public_id);
+
+
 
   const imageIndex = visibleImages.indexOf(image);
 

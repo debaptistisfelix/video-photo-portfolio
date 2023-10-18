@@ -84,7 +84,7 @@ export default function UserGallery() {
 
     const getSizeFromWidth = () => {
         if(windowWidth <= 500){
-            return "100";
+            return "150";
         } else if(windowWidth > 500 && windowWidth <= 800){
             return "150";
         } else if(windowWidth > 800){
