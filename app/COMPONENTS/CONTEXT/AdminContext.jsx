@@ -9,7 +9,7 @@ export default function AdminContextProvider({children}) {
     const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false);
     const [checkedCheckboxes, setCheckedCheckboxes] = useState([]);
     const [isRemovingImages, setIsRemovingImages] = useState(false);
-
+    const [videos, setVideos] = useState(null);
 
     return (
         <AdminContext.Provider value={{
@@ -20,7 +20,8 @@ export default function AdminContextProvider({children}) {
             fullScreenImageLoadedComplete,
             setFullScreenImageLoadedComplete,
             checkedCheckboxes, setCheckedCheckboxes,
-            isRemovingImages, setIsRemovingImages
+            isRemovingImages, setIsRemovingImages,
+            videos, setVideos
         }}>
             {children}
         </AdminContext.Provider>
