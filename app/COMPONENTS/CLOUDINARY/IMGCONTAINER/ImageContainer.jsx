@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Loader from "../../LOADER/Loader";
 import CheckBox from "../../CHECKBOX/CheckBox";
 
-export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage, isAdminPage, onCheckboxChange}) {
+export default function ImageContainer({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage, isAdminPage, onCheckboxChange, checkedCheckboxes}) {
     const [photoSpans, setPhotoSpans] = useState(250);
     const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete, } = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
@@ -17,6 +17,8 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     const fullScreenBlackContainerRef = useRef(null);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+    const [touchStartTime, setTouchStartTime] = useState(null);
+    const longPressDuration = 1000;
     const [isChecked, setIsChecked] = useState(false);
 
     const handleCheckboxChange = () => {
@@ -40,6 +42,8 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     },[])
 
 
+
+    // Set row span for image for grid layout
     const setRowSpan = () => {
        const imageWidth = getSizeFromWidth();
         const aspectRatio = image.height / image.width;
@@ -52,6 +56,8 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
       //recalculate row span when window width or images change
         setRowSpan();
     },[windowWidth, images, visibleImages])
+
+    // Swipe functionality
 
     const handleTouchStart = (event) => {
       setTouchStart({
@@ -96,10 +102,42 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
     }, [touchEnd])
 
 
+    // pressing image for 3 seconds will toggle isChecked
+    const handlePressStart = () => {
+      setTouchStartTime(Date.now()); // Record the start time
+    };
+
+    const handlePressEnd = () => {
+      const touchEndTime = Date.now(); // Record the end time
+      const touchDuration = touchEndTime - touchStartTime; // Calculate the touch duration
+  
+      // Check if the touch duration is greater than the long press duration
+      if (touchDuration >= longPressDuration) {
+        // Toggle the isChecked state
+        handleCheckboxChange();
+      }
+    }
+
+    const handleImageClickBasedOnSituation = () => {
+      console.log("running")
+      if(checkedCheckboxes.length === 0){
+        console.log("empty")
+       
+        openFullScreenMode(imageIndex)
+      } else if(checkedCheckboxes.length > 0){
+        handleCheckboxChange();
+      }
+    }
+
+ 
+
+
 
   return (
     <>
     <div
+    onTouchStart={handlePressStart}
+    onTouchEnd={handlePressEnd}
     style={{ gridRow: `span ${photoSpans}`, width: `${getSizeFromWidth()}px` }}
     className={styles.imgContainer}>
         <CldImage
@@ -113,12 +151,20 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
         onLoadingComplete={()=>setImageLoadedComplete(true)}
         alt="Description of my image"
       />
+     
       {imageLoadedComplete === false && <div className={styles.loadingDiv}>
         <FontAwesomeIcon icon={faImage} className={styles.loadingIcon} />
         <h1 className={styles.loadingText}>LOADING</h1>
       </div>}
-      {imageLoadedComplete === true && isAdminPage === true && <CheckBox onChange={handleCheckboxChange} />}
+      {isChecked === true && <div className={styles.redFilter}></div>}
+     
+      {imageLoadedComplete === true && isAdminPage === true && <CheckBox onChange={handleCheckboxChange} checked={isChecked} />}
     </div>
+
+
+
+  
+
     {fullScreenState.isOpen === true &&  <>
       <div
       onTouchStart={handleTouchStart}
@@ -140,12 +186,17 @@ export default function ImageContainer({image, visibleImages, windowWidth, getSi
         <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
       </div> </> }
       </div>
+
+
+
       <div className={styles.fullscreenNavigation}>
       <FontAwesomeIcon
       icon={faChevronLeft} className={styles.fullscreenNavIcon} onClick={handlePrevImage} />
       <FontAwesomeIcon
       icon={faChevronRight} className={styles.fullscreenNavIcon} onClick={handleNextImage} />
-  </div></>
+  </div>
+  
+  </>
       }
    
     </>

@@ -127,6 +127,7 @@ export default function AdminGallery(results) {
 
 
    const openFullScreenMode = (imageIndex) =>{
+    setIsRemovingImages(false);
     setFullScreenImageLoadedComplete(false);
       setFullScreenState({
         isOpen: true,
@@ -218,7 +219,7 @@ style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1
 >
   {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
     return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-    handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} />
+    handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} checkedCheckboxes={checkedCheckboxes} />
   })}
 </div>
 
