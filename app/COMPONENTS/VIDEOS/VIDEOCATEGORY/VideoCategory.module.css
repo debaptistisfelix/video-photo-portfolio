@@ -1,0 +1,122 @@
+.videoCategoryContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    cursor: pointer;
+
+}
+
+
+
+.imgContainer{
+    width: 100%;
+    height: fit-content;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.25);
+}
+
+.image{
+    width: 100%;
+    height: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0%{
+        opacity: 0.5;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0.5;
+    }
+}
+
+.text{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+    gap: 10px;
+    box-sizing: border-box;
+
+}
+
+.title{
+    color: white;
+    font-size: 18px;
+}
+
+.parag{
+    color: white;
+    width: 100%;
+}
+
+.socialContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50px;
+    gap: 20px;
+}
+
+.socialTitle{
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+}
+
+.iconContainer{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+}
+
+.icon{
+    width: 24px;
+    height: 24px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (hover:hover) and (pointer:fine){
+    .videoCategoryContainer:hover .image{
+        filter: brightness(0.75);
+    }
+    .icon:hover{
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width:500px) and (hover: none) and (pointer: coarse)  {
+    .text{
+        gap: 10px;
+    }
+ .title{
+    font-size: clamp(14px, 4vw + 0.12rem, 18px);
+ }
+
+ .parag{
+    font-size: clamp(12px, 3.58vw + 0.12rem, 16px);
+ }
+
+ .socialContainer{
+    height: fit-content;
+ }
+
+ .socialTitle{
+    font-size: clamp(12px, 3.58vw + 0.12rem, 16px);
+ }
+
+ .icon{
+    width: clamp(18px, 5.72vw + 0.12rem, 22px);
+    height: clamp(18px, 5.72vw + 0.12rem, 22px);
+ }
+}

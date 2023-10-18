@@ -7,6 +7,7 @@ import { CldImage } from 'next-cloudinary';
  import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
  import Image from 'next/image';
  import backgroundImg from '@/public/paris.jpg'
+ import VideoSection from '@/app/COMPONENTS/VIDEOS/VIDEOSECTION/VideoSection';
 
 
 export default function Page() {
@@ -17,6 +18,8 @@ export default function Page() {
         style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw"
         placeholder='blur' />
       <section className={styles.content}>
+      <h1 className={styles.title}>Galleria Video</h1>
+        <VideoSection /> 
         </section>
     </main>
   )

@@ -1,0 +1,19 @@
+.videoSection{
+    width: 100%;
+    height: fit-content;
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    box-sizing: border-box;
+    row-gap: 0px;
+    column-gap: 20px;
+  /*   border: 1px solid white; */
+}
+
+@media (max-width:500px) and (hover: none) and (pointer: coarse)  {
+ .videoSection{
+    grid-template-columns: repeat(auto-fit, minmax(90%, 1fr));
+    row-gap: 20px;
+ }
+}
+
