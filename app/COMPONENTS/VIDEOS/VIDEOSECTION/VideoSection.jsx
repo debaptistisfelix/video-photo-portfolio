@@ -6,95 +6,10 @@ import { useState, useEffect, useContext } from 'react'
 import { AdminContext } from '../../CONTEXT/AdminContext'
 import Loader from '../../LOADER/Loader'
 
-/* const videos = [
-    {
-        title: "JACK NBC",
-        img: "logo-nic.jpg",
-        text: "Questa Playlist contiene: 14 video.",
-        id: "1",
-        social: [
-            {
-                name: "Instagram",
-                icon: faInstagram,
-                link: "https://www.instagram.com/moto.it/"
-            },
-            {
-                name: "Youtube",
-                icon: faYoutube,
-                link: "https://www.youtube.com/user/motodotit"
-            },
-            {
-                name: "Tiktok",
-                icon: faTiktok,
-                link: "https://www.tiktok.com/@motoit"
-            }
-        ]
-    },
-    {
-        title: "MOTO.IT",
-        img: "logo-moto.jpg",
-        text: "Questa Playlist contiene: 14 video.",
-        color:"#FFDE01",
-        backgroundColor: "#191919",
-        id: "2",
-        social: [
-           
-            {
-                name: "Youtube",
-                icon: faYoutube,
-                link: "https://www.youtube.com/user/motodotit"
-            },
-            
-        ]
-    },
-    {
-        title: "ROSSO CORSA",
-        img: "logo-rosso.jpg",
-        text: "Questa Playlist contiene: 14 video.",
-        backgroundColor: "#d90429",
-        color:"white",
-        backgroundColor:"#FC0402",
-        id: "3",
-        social: [
-            {
-                name: "Instagram",
-                icon: faInstagram,
-                link: "https://www.instagram.com/moto.it/"
-            },
-            {
-                name: "Youtube",
-                icon: faYoutube,
-                link: "https://www.youtube.com/user/motodotit"
-            },
-            {
-                name: "Tiktok",
-                icon: faTiktok,
-                link: "https://www.tiktok.com/@motoit"
-            }
-        ]
-    },
-    {
-        title: "GC VIDEOMAKING",
-        img: "logo-suo.jpg",
-        text: "Questa Playlist contiene: 14 video.",
-        color:"white",
-        backgroundColor:"#FC0402",
-        id: "4",
-        social: [
-           
-            {
-                name: "Youtube",
-                icon: faYoutube,
-                link: "https://www.youtube.com/user/motodotit"
-            },
-            
-        ]
-    },
-] */
 
 
 export default function VideoSection() {
-    const {videos, setVideos} = useContext(AdminContext);
+    const {playlists, setPlaylists} = useContext(AdminContext);
     const [fetchVideosState, setFetchVideosState] = useState({
         loading: true,
         error: false
@@ -120,7 +35,7 @@ export default function VideoSection() {
                 })
             } else {
                 const data = await response.json();
-                setVideos(data);
+                setPlaylists(data);
                 setFetchVideosState({
                     loading: false,
                     error: false
@@ -141,7 +56,6 @@ export default function VideoSection() {
         fetchVideos();
     },[])
 
-    console.log(videos)
 
   return (
     <section className={styles.videoSection}>
@@ -150,7 +64,7 @@ export default function VideoSection() {
   <h1 className={styles.fetchLoading}>Loading</h1>
   </div>}
   {fetchVideosState.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
-       {videos !== null && fetchVideosState.loading !== true && fetchVideosState.error !== true && videos.map((video, index) => {
+       {playlists !== null && fetchVideosState.loading !== true && fetchVideosState.error !== true && playlists.map((video, index) => {
             return (
                 <VideoCategory key={index} video={video} />
             )

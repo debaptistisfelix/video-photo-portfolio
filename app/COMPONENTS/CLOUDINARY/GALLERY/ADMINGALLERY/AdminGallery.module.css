@@ -26,6 +26,11 @@
         font-weight: 600;
         color: white;
     }
+
+    .fotoCount{
+        font-weight: 400;
+        margin-left: 10px;
+    }
     
     .btnContainer{
         display: flex;

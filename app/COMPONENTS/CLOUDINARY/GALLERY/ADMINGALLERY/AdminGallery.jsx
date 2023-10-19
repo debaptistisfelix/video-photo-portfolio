@@ -9,13 +9,15 @@ import Loader from '@/app/COMPONENTS/LOADER/Loader';
 import { usePathname } from 'next/navigation';
 import RemoveBtn from '../../REMOVEBTN/RemoveBtn';
 import toast, { Toaster } from 'react-hot-toast';
+import Modal from '@/app/COMPONENTS/MODAL/Modal';
+import FullscreenLoader from '@/app/COMPONENTS/FULLSCREENLOADER/FullscreenLoader';
 
 
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
   const {images, setImages, setFullScreenImageLoadedComplete, checkedCheckboxes, setCheckedCheckboxes, isRemovingImages, setIsRemovingImages} = useContext(AdminContext);
-  const [visibleImages, setVisibleImages] = useState([]);
+  const [visibleImages, setVisibleImages] = useState(null);
   const imagesPerPage = 30;
   const [currentLength, setCurrentLength] = useState(null);
   const [fullScreenState, setFullScreenState] = useState({
@@ -136,15 +138,9 @@ export default function AdminGallery(results) {
 
         handleWindowResize();
 
-       const handleImageLoad = () => {
-        if(images === null){
-          fetchImages();
-        } else {
-          return;
-        }
-       }
+    fetchImages();
 
-       handleImageLoad();
+      
 
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
@@ -272,7 +268,7 @@ export default function AdminGallery(results) {
     <section className={styles.categorySection}>
 
       <div className={styles.categoryNav}>
-      <h1 className={styles.bannerTitle}>GALLERIA FOTO</h1>
+      <h1 className={styles.bannerTitle}>GALLERIA FOTO <b className={styles.fotoCount}>({images?.length ? images?.length : "0"} file)</b></h1>
       <div className={styles.btnContainer}>
       {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
       <UploadBtn />
@@ -282,7 +278,7 @@ export default function AdminGallery(results) {
       <div className={styles.imagesGallery}
       style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
       >
-      {windowWidth !== null && images !== null && visibleImages.map((image, index) => {
+      {windowWidth !== null && images !== null && visibleImages !== null && visibleImages.map((image, index) => {
         return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
         handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} checkedCheckboxes={checkedCheckboxes} />
       })}
@@ -295,25 +291,15 @@ export default function AdminGallery(results) {
 
       {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
       {
-        images !== null && visibleImages.length < images.length &&
+        images !== null && visibleImages !== null && visibleImages.length < images.length &&
         <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
       }
       </section>
       {
-        isRemovingImages === true && <section className={styles.modal}>
-        <p className={styles.removeParag}>Eliminare queste immagini da Cloudinary?</p>
-        <div className={styles.removeBtnContainer}>
-          <div onClick={()=>{setIsRemovingImages(false)}} className={styles.cancelBtn}>Annulla</div>
-          <div
-          onClick={removeImages}
-          className={styles.confirmBtn}>Conferma</div>
-        </div>
-      </section>
+        isRemovingImages === true && <Modal parag={`Eliminare ${checkedCheckboxes?.length} ${checkedCheckboxes?.length > 1 ? "immagini" : "immagine"}?`} btn1Text="Annulla" btn2Text="Conferma" btn1Func={()=>{setIsRemovingImages(false)}} btn2Func={removeImages} />
       }
       {
-        removingLoadingState.loading === true && <div className={styles.removingImagesLoaderContainer}>
-        <Loader />
-        </div>
+        removingLoadingState.loading === true && <FullscreenLoader />
       }
       </>
       )

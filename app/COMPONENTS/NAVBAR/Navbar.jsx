@@ -48,7 +48,7 @@ export default function Navbar() {
 </div>
 
 {<Link href="/" className={styles.logoLink}>
-<Image src={NavBarLogo} alt="logo" className={styles.logo} width={35} height={35} />
+<Image src={NavBarLogo} alt="logo" className={styles.logo} width={40} height={40} />
 </Link>}
 
 <div onClick={toggle} className={styles.hamburgerIcon}>

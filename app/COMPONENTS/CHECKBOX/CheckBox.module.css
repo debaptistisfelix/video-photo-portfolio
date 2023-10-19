@@ -16,17 +16,20 @@
     height: 20px;
     color: white;
     opacity: 1;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
     transition: all 0.3s ease-in-out;
-
-    border: 2px solid white;
-    border-radius: 50%;
-    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
   
   }
 
-  @media (hover:none) and (pointer:fine) {
+  @media (hover:hover) and (pointer:fine) {
     .trashIcon:hover{
-      transform: scale(1.2);
+      border: 1px solid white;
     }
   }
 
@@ -68,8 +71,9 @@
       width: 24px;
       height: 24px;
       border: 2px solid white;
-      border-radius: 50%;
-      padding: 5px;
+  
+      padding: 3px;
+      border-radius: 5px;
     }
   }
 
@@ -82,8 +86,9 @@
       width: 24px;
       height: 24px;
       border: 2px solid white;
-      border-radius: 50%;
-      padding: 5px;
+  
+      padding: 3px;
+      border-radius: 5px;
     }
   }
   

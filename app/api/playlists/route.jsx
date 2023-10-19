@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 export async function GET(request){
     try{
-        const allPlaylists = await prisma.playlist.findMany();
+        const allPlaylists = await prisma.playlist.findMany({
+            include: {
+                youtubeVideos: true
+            }
+        });
         console.log(allPlaylists);
     
         request.headers.set('Cache-Control', 'no-store');
@@ -21,7 +25,7 @@ export async function POST(request){
     const body = await request.json();
     const {title, bannerImg, instagramUrl, youtubeUrl, tiktokUrl, youtubeVideos} = body;
  
-    if(!title || !bannerImg || !youtubeUrl || !youtubeVideos){
+    if(!title || !bannerImg || !youtubeUrl ){
         return new Response(JSON.stringify("Please provide all details"), {status: 400})
      }
  
@@ -33,7 +37,6 @@ export async function POST(request){
                 instagramUrl,
                  youtubeUrl,
                  tiktokUrl,
-                 youtubeVideos: [...youtubeVideos]
                }
          });
         

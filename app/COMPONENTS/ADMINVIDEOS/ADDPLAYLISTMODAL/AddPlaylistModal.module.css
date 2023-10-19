@@ -1,0 +1,190 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    background-color: white;
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.title{
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    text-align: center;
+    color: gray;
+
+}
+
+.form{
+    display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    height: fit-content;
+}
+
+.input{
+    color: gray;
+    height: 42px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    border: 1px solid lightgray;
+    outline: none;
+    font-size: 14px;
+}
+
+.input:placeholder{
+    font-size: 14px;
+    color: gray;
+}
+
+.input:focus{
+    border: 1px solid gray;
+}
+
+.titleInput{
+    width: 40%;
+}
+
+.addImgContainer{
+    color: gray;
+    height: 42px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 55%;
+}
+
+.imgText, .addedImgText{
+    font-size: 14px;
+    color: gray;
+}
+
+.uploadCloudinaryBtn{
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gray;
+    color: gray;
+    border-radius: 12px;
+    background-color: white;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    font-size: 14px;
+}
+
+.loadedImgContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height: fit-content;
+    height: 200px;
+}
+
+.imgContainer{
+    width: 50%;
+    height: 80%;
+    border: 1px solid lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 20px;
+    overflow: hidden;
+    opacity: 0;
+    position: relative;
+}
+
+.showImgContainer{
+    opacity: 1;
+}
+
+
+
+.imgIcon{
+    width: 40px;
+    height: 40px;
+    color: gray;
+}
+
+.socialContainer{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: fit-content;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.socialInput{
+    width: 30%;
+}
+
+.btnContainer{
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    gap: 50px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.cancelBtn, .confirmBtn{
+    padding: 10px 20px;
+    border-radius: 20px;
+    height: 42px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gray;
+
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    color:gray;
+}
+
+@media (hover:hover) and (pointer: fine){
+    .uploadCloudinaryBtn:hover{
+        background-color: gray;
+        color: white;
+        cursor: pointer;
+    }
+
+    .cancelBtn:hover, .confirmBtn:hover{
+        background-color: gray;
+        color: white;
+    }
+}

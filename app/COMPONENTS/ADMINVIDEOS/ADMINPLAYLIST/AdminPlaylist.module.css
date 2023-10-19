@@ -1,0 +1,114 @@
+.container{
+    width: 100%;
+    height: fit-content;
+
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.imgContainer{
+    width: 100%;
+    max-height: fit-content;
+    height: fit-content;
+    border-radius: 20px;
+    position: relative;
+ 
+}
+
+
+
+.img{
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+}
+
+.barsIcon{
+    position: absolute;
+    top: 15px;
+    left: 85%;
+    color: gray;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+.title{
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+.imgModal{
+    box-sizing: border-box;display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50px;
+    left: 85%;
+    background-color: gray;
+    z-index: 2;
+    border-radius: 5px;
+    overflow: hidden;
+
+}
+
+.modalOption{
+    color: lightgray;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 50%;
+    padding: 5px 10px;
+}
+
+@media (hover:hover) and (pointer:fine){
+   .barsIcon:hover{
+    
+    border: 1px solid gray;
+   }
+
+   .modalOption:hover{
+    color: white;
+    background-color: rgb(92, 92, 92);
+   }
+}
+
+@media (max-width:500px){
+    .imgModal{
+        left: unset;
+        right: 5%;
+    }
+}
+
+@media (max-width:500px) and (hover:none) and (pointer: coarse){
+    .barsIcon{
+       width: clamp(20px, 6.45vw + 0.12rem, 24px); 
+       height: clamp(20px, 6.45vw + 0.12rem, 24px); ;
+    }
+
+    .modalOption{
+        font-size: clamp(14px, 4vw + 0.12rem, 16px);
+        padding: clamp(5px, 1.1vw + 0.12rem, 8px) clamp(10px, 2.86vw + 0.12rem, 15px);
+    }
+}

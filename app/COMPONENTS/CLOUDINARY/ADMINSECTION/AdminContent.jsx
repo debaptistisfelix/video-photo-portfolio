@@ -1,16 +1,22 @@
 "use client"
 import styles from './AdminContent.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFilm, faImage} from '@fortawesome/free-solid-svg-icons';
 import AdminGallery from '../GALLERY/ADMINGALLERY/AdminGallery';
-
+import VideoGallery from '../../ADMINVIDEOS/VIDEOGALLERY/VideoGallery';
+import { AdminContext } from '../../CONTEXT/AdminContext';
 
 export default function AdminContent() {
     const [category, setCategory] = useState("foto");
+    const {setCheckedCheckboxes} = useContext(AdminContext);
 
     const handleCategoryChange = (categ) => {
        setCategory(categ);
+       if(category !== "foto"){
+        setCheckedCheckboxes([]);
+        setCategory(categ);
+       }
     }
 
   
@@ -32,9 +38,7 @@ export default function AdminContent() {
        </div>
         </div>  
       {category === "foto" ? <AdminGallery/>
-     : <section className={styles.categorySection}>
-         <h1>VIDEO</h1>
-         </section>}
+     : <VideoGallery/>}
         </section>
   )
 }

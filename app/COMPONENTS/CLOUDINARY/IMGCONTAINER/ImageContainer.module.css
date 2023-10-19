@@ -166,7 +166,8 @@
     background-color: red;
     opacity: 0.3;
     width: 100%;
-    height: calc(100% - 10px);
+    height: calc(100% - 15px);
+  
     position: absolute;
     z-index: 2;
     top: 0;
@@ -176,9 +177,9 @@
 
 
 @media (hover:hover) and (pointer:fine){
-    .imgContainer:hover{
+  /*   .imgContainer:hover{
         filter: brightness(0.65);
-    }
+    } */
 
   
 

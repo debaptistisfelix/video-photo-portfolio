@@ -10,7 +10,7 @@ import Loader from '@/app/COMPONENTS/LOADER/Loader';
 export default function UserGallery() {
     const [windowWidth, setWindowWidth] = useState(null);
     const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete} = useContext(AdminContext);
-    const [visibleImages, setVisibleImages] = useState([]);
+    const [visibleImages, setVisibleImages] = useState(null);
     const imagesPerPage = 30;
     const [fullScreenState, setFullScreenState] = useState({
       isOpen: false,
@@ -161,7 +161,7 @@ export default function UserGallery() {
     <section className={styles.gallery}
     style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
     >
-     {windowWidth !== null && visibleImages.map((image, index) => {
+     {windowWidth !== null && visibleImages !== null && visibleImages.map((image, index) => {
         return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
         handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
       })}
@@ -170,7 +170,7 @@ export default function UserGallery() {
 
     </section>
    {
-      imagesForUser !== null && fetchDataStates.success === true &&  visibleImages.length < imagesForUser.length &&
+      imagesForUser !== null && fetchDataStates.success === true && visibleImages !== null &&  visibleImages.length < imagesForUser.length &&
       <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
     }
 
