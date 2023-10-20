@@ -159,8 +159,6 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
                     duration: videoDuration,
                     thumbnail: data.items[0].snippet.thumbnails.default.url,
                     link: url,
-                    youtubeVideoIdId: videoId,
-
                 }
                 setNewVideoInfos(necessaryInfos);
                 setLoadingState({
@@ -183,6 +181,8 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
       const resetNewVideosInfos = () => {
         setNewVideoInfos(null);
       };
+
+      console.log("newVideoInfos: ", newVideoInfos)
 
       const createNewVideoForPlaylist = async (newVideo) => {
         setLoadingState({

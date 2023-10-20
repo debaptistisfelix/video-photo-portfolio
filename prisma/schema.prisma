@@ -37,7 +37,6 @@ model Playlist {
 
 model YoutubeVideo {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  youtubeVideoId String
   title       String
   duration    String
   thumbnail   String
