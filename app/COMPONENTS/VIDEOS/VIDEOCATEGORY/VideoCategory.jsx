@@ -14,11 +14,12 @@ export default function VideoCategory({video}) {
   const [imageLoadingCompleted, setImageLoadingCompleted] = useState(false)
     const router = useRouter();
 
+    console.log(video)
   
   return (
     <div  className={styles.videoCategoryContainer}>
         <div onClick={()=>{
-        router.push(`/foto`)
+        router.push(`/video/${video.id}`)
     }} className={styles.imgContainer}>
         <Image  src={`${video.bannerImg.url}`} width={300} height={150} className={`${styles.image} ${imageLoadingCompleted === true && styles.showImage}`} sizes='100vw' alt="banner-img" onLoadingComplete={()=>{
           setImageLoadingCompleted(true)
