@@ -8,7 +8,7 @@ import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
 import { usePathname } from 'next/navigation';
 import RemoveBtn from '../../REMOVEBTN/RemoveBtn';
-import toast, { Toaster } from 'react-hot-toast';
+import notify from '@/lib/toastNotify';
 import Modal from '@/app/COMPONENTS/MODAL/Modal';
 import FullscreenLoader from '@/app/COMPONENTS/FULLSCREENLOADER/FullscreenLoader';
 
@@ -60,12 +60,21 @@ export default function AdminGallery(results) {
         })
       }
       const data = await response.json();
-      setImages(data);
+      if(Array.isArray(data)){
+        setImages(data);
       setFetchDataStates({
         success: true,
         loading: false,
         error:false
       })
+      } else {
+        setImages(null)
+        setFetchDataStates({
+          success: false,
+          loading: false,
+          error:true
+        })
+      }
     } catch (error) {
       console.log(error)
       setFetchDataStates({
@@ -76,12 +85,7 @@ export default function AdminGallery(results) {
     }
   }
 
-  const notify = (text, status) => toast(<>{text}</>, {
-    style:{
-        backgroundColor: status === "success" ? "white" : "red",
-        color: status === "success" ? "gray" : "white",
-    }
-   });
+
 
   const removeImages = async () => {
     setIsRemovingImages(false);
@@ -105,6 +109,7 @@ export default function AdminGallery(results) {
           loading: false,
           success: false,
         })
+        setCheckedCheckboxes([]);
         notify("Errore durante l'eliminazione delle immagini", "error")
       } else {
         const data = await response.json();
@@ -126,6 +131,7 @@ export default function AdminGallery(results) {
         loading: false,
         success: false,
       })
+      setCheckedCheckboxes([]);
       notify("Errore durante l'eliminazione delle immagini", "error")
     }
   }
@@ -164,7 +170,7 @@ export default function AdminGallery(results) {
 
 
     useEffect(()=>{
-      if(images !== null){
+      if(images !== null && Array.isArray(images)){
         if(currentLength === null){
           setVisibleImages(images.slice(0, imagesPerPage));
         } else {
@@ -262,13 +268,12 @@ export default function AdminGallery(results) {
 
 
 
-
   return (
     <>
     <section className={styles.categorySection}>
 
       <div className={styles.categoryNav}>
-      <h1 className={styles.bannerTitle}>GALLERIA FOTO <b className={styles.fotoCount}>({images?.length ? images?.length : "0"} file)</b></h1>
+      <h1 className={styles.bannerTitle}>GALLERIA FOTO <b className={styles.fotoCount}>({Array.isArray(images) ? images?.length : "0"} file)</b></h1>
       <div className={styles.btnContainer}>
       {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
       <UploadBtn />
@@ -285,11 +290,11 @@ export default function AdminGallery(results) {
       </div>
 
       {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
-      <Loader />
+      <Loader color="#ffffff" />
       <h1 className={styles.fetchLoading}>Loading</h1>
       </div>}
 
-      {fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
+      {fetchDataStates.error === true && visibleImages === null &&  <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
       {
         images !== null && visibleImages !== null && visibleImages.length < images.length &&
         <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>

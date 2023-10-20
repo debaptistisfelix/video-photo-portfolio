@@ -14,27 +14,13 @@ export default function VideoCategory({video}) {
   const [imageLoadingCompleted, setImageLoadingCompleted] = useState(false)
     const router = useRouter();
 
-  /*   const videoiIds = "PrdbyNYq-z4,v6TPcU23wP8"
-
-    const fetchVideoInfo = async (videoId) => {
-        const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`)
-        const data = await res.json()
-        console.log(data)
-    }
-
-    useEffect(() => {
-      fetchVideoInfo(videoiIds)
-    },[]) */
-
- 
-
   
   return (
     <div  className={styles.videoCategoryContainer}>
         <div onClick={()=>{
         router.push(`/foto`)
     }} className={styles.imgContainer}>
-        <Image  src={`/${video.bannerImg}`} width={300} height={150} className={`${styles.image} ${imageLoadingCompleted === true && styles.showImage}`} sizes='100vw' alt="banner-img" onLoadingComplete={()=>{
+        <Image  src={`${video.bannerImg.url}`} width={300} height={150} className={`${styles.image} ${imageLoadingCompleted === true && styles.showImage}`} sizes='100vw' alt="banner-img" onLoadingComplete={()=>{
           setImageLoadingCompleted(true)
         }}/>
         {imageLoadingCompleted === false && <div className={styles.loadingDiv}>

@@ -8,7 +8,7 @@ import VideoGallery from '../../ADMINVIDEOS/VIDEOGALLERY/VideoGallery';
 import { AdminContext } from '../../CONTEXT/AdminContext';
 
 export default function AdminContent() {
-    const [category, setCategory] = useState("foto");
+    const [category, setCategory] = useState("video");
     const {setCheckedCheckboxes} = useContext(AdminContext);
 
     const handleCategoryChange = (categ) => {
@@ -27,13 +27,14 @@ export default function AdminContent() {
        <div className={styles.nav}>
         <h1 className={styles.adminTitle}>ADMIN</h1>
        <div className={styles.btnContainer}>
-       <div onClick={()=>{handleCategoryChange("foto")}} className={styles.btn}>
-            <FontAwesomeIcon icon={faImage} className={styles.icon} />
-            <h2 className={styles.categTitle}>Foto</h2>
-        </div>
+      
         <div onClick={()=>{handleCategoryChange("video")}} className={styles.btn}>
             <FontAwesomeIcon icon={faFilm} className={styles.icon} />
             <h2 className={styles.categTitle}>Video</h2>
+        </div>
+        <div onClick={()=>{handleCategoryChange("foto")}} className={styles.btn}>
+            <FontAwesomeIcon icon={faImage} className={styles.icon} />
+            <h2 className={styles.categTitle}>Foto</h2>
         </div>
        </div>
         </div>  

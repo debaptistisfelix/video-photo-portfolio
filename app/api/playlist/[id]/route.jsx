@@ -1,18 +1,25 @@
 import { PrismaClient } from "@prisma/client";
 export const dynamic = 'force-dynamic';
+import cloudinary from 'cloudinary';
 
 const prisma = new PrismaClient();
 
 export async function GET(request, {params}){
     const {id} = params;
 
-    console.log("id:", id)
+   
     try{
         const playlist = await prisma.playlist.findUnique({
             where: {
                 id:id
             }
         });
+
+
+        if(!playlist){
+            return new Response(JSON.stringify("Playlist not found"), {status: 404})
+        }
+        
 
         request.headers.set('Cache-Control', 'no-store');
 
@@ -53,6 +60,30 @@ export async function DELETE(request, {params}){
     const {id} = params;
 
     try{
+        const playlist = await prisma.playlist.findUnique({
+            where: {
+                id:id
+            }
+        });
+
+        if(!playlist){
+            return new Response(JSON.stringify("Playlist not found"), {status: 404})
+        }
+
+        await cloudinary.v2.api
+        .delete_resources(playlist.bannerImg.public_id)
+        .then(result=>{
+            console.log(result)
+            return result
+        });
+
+        const deletedYoutubeVideos = await prisma.youtubeVideo.deleteMany({
+            where: {
+                playlistId: id
+            }
+        });
+
+
         const deletedPlaylist = await prisma.playlist.delete({
             where: {
                 id: id

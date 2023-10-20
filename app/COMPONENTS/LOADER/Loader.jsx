@@ -2,18 +2,17 @@ import styles from './Loader.module.css';
 import Image from 'next/image';
 import ShutterImg from "@/public/shutter.png"
 
-export default function Loader() {
+export default function Loader({color}) {
   return (
-        <div className={styles.loader}>
-        {/* <Image src={ShutterImg} width={80} height={80} alt="loader-icon" priority={true} quality={80}
-        className={styles.loaderImg} size="80px"
-         /> */}
+        <div
+        style={{border:`5px solid ${color}`}}
+        className={styles.loader}>
            <svg className={styles.loaderImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000"
  preserveAspectRatio="xMidYMid meet">
 
 <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)"
-fill="#ffffff" stroke="none">
+fill={color} stroke="none">
 <path d="M245 631 c-68 -17 -175 -87 -175 -115 0 -20 81 -156 90 -151 5 3 114
 188 157 268 5 9 -31 8 -72 -2z"/>
 <path d="M318 566 c-22 -39 -43 -74 -45 -78 -2 -5 68 -8 156 -8 104 0 161 4

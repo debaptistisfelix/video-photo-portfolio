@@ -6,7 +6,7 @@ import Loader from '../LOADER/Loader';
 export default function FullscreenLoader() {
   return (
     <div className={styles.removingImagesLoaderContainer}>
-        <Loader />
+        <Loader color="#ffffff" />
         </div>
   )
 }

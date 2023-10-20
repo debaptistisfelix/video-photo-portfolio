@@ -5,6 +5,11 @@ import Image from 'next/image';
 import UserGallery from '@/app/COMPONENTS/CLOUDINARY/GALLERY/USERGALLERY/UserGallery';
 import backgroundImg from '@/public/paris.jpg'
 
+export const metadata = {
+  title: 'Simone Capozzi - Galleria Foto',
+  description: 'Portfolio Foto & Video Maker',
+}
+
 export default async function Page() {
 
   return (

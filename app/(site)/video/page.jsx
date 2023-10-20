@@ -1,14 +1,13 @@
-"use client"
 import styles from './page.module.css'
-import Layout from '@/app/COMPONENTS/LAYOUT/Layout'
-import { CldUploadButton } from 'next-cloudinary';
-import { CldImage } from 'next-cloudinary';
- import { useState } from 'react';
  import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
  import Image from 'next/image';
  import backgroundImg from '@/public/paris.jpg'
  import VideoSection from '@/app/COMPONENTS/VIDEOS/VIDEOSECTION/VideoSection';
 
+ export const metadata = {
+  title: 'Simone Capozzi - Galleria Video',
+  description: 'Portfolio Foto & Video Maker',
+}
 
 export default function Page() {
   return (

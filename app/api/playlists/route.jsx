@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 export const dynamic = 'force-dynamic';
+import cloudinary from 'cloudinary';
 
 const prisma = new PrismaClient();
 
@@ -23,7 +24,7 @@ export async function GET(request){
 
 export async function POST(request){
     const body = await request.json();
-    const {title, bannerImg, instagramUrl, youtubeUrl, tiktokUrl, youtubeVideos} = body;
+    const {title, bannerImg, instagramUrl, youtubeUrl, tiktokUrl} = body;
  
     if(!title || !bannerImg || !youtubeUrl ){
         return new Response(JSON.stringify("Please provide all details"), {status: 400})
@@ -39,6 +40,13 @@ export async function POST(request){
                  tiktokUrl,
                }
          });
+
+         const addPlaylistTagToCloudinaryImage = async ()=>{
+            await cloudinary.v2.uploader.add_tag("playlist", bannerImg.public_id, 
+                function(error, result) {console.log(result, error)});
+         }
+
+         await addPlaylistTagToCloudinaryImage();
         
  
          request.headers.set('Cache-Control', 'no-store');

@@ -45,12 +45,21 @@ export default function UserGallery() {
           })
         }
         const data = await response.json();
-        setImagesForUser(data);
+        if(Array.isArray(data)){
+          setImagesForUser(data);
         setFetchDataStates({
           success: true,
           loading: false,
           error:false 
         })
+        } else {
+          setImagesForUser(null)
+          setFetchDataStates({
+            success: false,
+            loading: false,
+            error:true
+          })
+        }
       } catch (error) {
         console.log(error)
         setFetchDataStates({
@@ -175,11 +184,11 @@ export default function UserGallery() {
     }
 
 {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
-  <Loader />
+  <Loader color="#ffffff" />
   <h1 className={styles.fetchLoading}>Loading</h1>
   </div>}
 
-{fetchDataStates.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
+{fetchDataStates.error === true && visibleImages === null &&  <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
 
     </>
   )

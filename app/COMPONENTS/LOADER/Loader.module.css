@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 5px solid #ffffff;
+
     padding: 2px;
     box-sizing: border-box;
 }
@@ -56,7 +56,7 @@
         width: clamp(60px, 20.72vw + 0.12rem, 70px);
         height:  clamp(60px, 20.72vw + 0.12rem, 70px);
   
-        border: 5px solid #ffffff;
+
     }
     
     .loaderImg{

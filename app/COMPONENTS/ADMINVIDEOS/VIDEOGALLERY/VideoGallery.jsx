@@ -6,9 +6,9 @@ import { useState, useEffect, useContext } from 'react';
 import { AdminContext } from '../../CONTEXT/AdminContext';
 import Loader from '../../LOADER/Loader';
 import AdminPlaylist from '../ADMINPLAYLIST/AdminPlaylist';
-import toast, { Toaster } from 'react-hot-toast';
 import FullscreenLoader from '../../FULLSCREENLOADER/FullscreenLoader';
 import AddPlaylistModal from '../ADDPLAYLISTMODAL/AddPlaylistModal';
+import notify from '@/lib/toastNotify';
 
 export default function VideoGallery() {
     const {playlists, setPlaylists,  isRemovingPlaylist, setIsRemovingPlaylist, addingToPlaylist, setAddingToPlaylist} = useContext(AdminContext);
@@ -21,15 +21,7 @@ export default function VideoGallery() {
         loading: false,
       });
 
-      const notify = (text, status) => toast(<>{text}</>, {
-        style:{
-            backgroundColor: status === "success" ? "white" : "red",
-            color: status === "success" ? "gray" : "white",
-        }
-       });
-    
-    
-
+     
     const fetchVideos = async () => {
         setFetchVideosState({
             loading: true,
@@ -50,11 +42,18 @@ export default function VideoGallery() {
                 })
             } else {
                 const data = await response.json();
+               if(Array.isArray(data)){
                 setPlaylists(data);
                 setFetchVideosState({
                     loading: false,
                     error: false
                 })
+               } else {
+                setFetchVideosState({
+                    loading: false,
+                    error: true
+                })
+               }
             }
         }
         catch(error){
@@ -158,6 +157,28 @@ export default function VideoGallery() {
         }
     };
 
+    const removeChosenImageFromCloudinaryLibrary = async (chosenImg) => {
+       try {
+        const body = {
+            imagesPublicIds: [chosenImg.public_id]
+          }
+          const res = await fetch("/api/removeImages", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+          })
+          if(!res.ok){
+            notify("Errore nell'eliminazione dell'immagine da Cloudinary. Controlla la tua Media Library", "error")
+          }
+          const data = await res.json();
+          notify("Immagine eliminata con successo da Cloudinary", "success")
+       } catch (error) {
+        console.log(error)
+        notify("Errore nell'eliminazione dell'immagine da Cloudinary. Controlla la tua Media Library", "error")
+       }
+      }
     
   return (
    <>
@@ -173,7 +194,7 @@ export default function VideoGallery() {
 
       <div className={styles.videosGallery}>
       {fetchVideosState.loading === true && <div className={styles.loaderContainer}>
-  <Loader />
+  <Loader color="#ffffff" />
   <h1 className={styles.fetchLoading}>Loading</h1>
   </div>}
   {fetchVideosState.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
@@ -182,12 +203,11 @@ export default function VideoGallery() {
             
         })}
       </div>
-      
     </section>
     {
         removingLoadingState.loading === true && <FullscreenLoader />
       }
-      {addingToPlaylist === true && <AddPlaylistModal createNewPlaylist={createNewPlaylist}/>}
+      {addingToPlaylist === true && <AddPlaylistModal removeChosenImageFromCloudinaryLibrary={removeChosenImageFromCloudinaryLibrary} createNewPlaylist={createNewPlaylist}/>}
    </>
   )
 }

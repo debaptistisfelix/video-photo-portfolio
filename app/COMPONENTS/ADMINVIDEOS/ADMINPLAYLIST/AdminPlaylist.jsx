@@ -6,16 +6,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AdminContext } from '../../CONTEXT/AdminContext';
 import Modal from '../../MODAL/Modal';
+import AddVideosModal from '../ADDVIDEOSMODAL/AddVideosModal';
 
 export default function AdminPlaylist({playList, removePlaylist}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const {isRemovingPlaylist, setIsRemovingPlaylist} = useContext(AdminContext);
     const modalRef = useRef(null);
     const barsIconRef = useRef(null);
+    const [addVideoModalIsOpen, setAddVideoModalIsOpen] = useState(false);
 
+    
     const toggleModal = () => {
         setModalIsOpen(!modalIsOpen);
     }
+
+    const toggleAddVideoModal = () => {
+        setAddVideoModalIsOpen(!addVideoModalIsOpen);
+    }
+
+    const closeAddVideoModal = () => {
+        setAddVideoModalIsOpen(false);
+    }
+
     useEffect(()=>{
         const handleClickOutsideModal = (e) => {
             if(modalRef.current && !modalRef.current.contains(e.target)){
@@ -24,6 +36,7 @@ export default function AdminPlaylist({playList, removePlaylist}) {
                 }
             }
         }
+
 
         document.addEventListener("click", handleClickOutsideModal);
 
@@ -34,12 +47,16 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     <>
     <div className={styles.container}>
         <div className={styles.imgContainer}>
-            <Image src={`/${playList?.bannerImg}`} width={200} height={100} alt="banner-img" sizes='100vw'
+            <Image src={`${playList?.bannerImg.url}`} width={200} height={100} alt="banner-img" sizes='100vw'
             className={styles.img}
             />
             <FontAwesomeIcon ref={barsIconRef} onClick={toggleModal} icon={faBars} className={styles.barsIcon}/>
             {modalIsOpen === true && <div ref={modalRef} className={styles.imgModal}>
-                <span className={styles.modalOption}>
+                <span
+                onClick={()=>{
+                    toggleAddVideoModal();
+                }}
+                className={styles.modalOption}>
                     <FontAwesomeIcon icon={faPenToSquare} className={styles.modalIcon}/>
                     Modifica
                 </span>
@@ -61,6 +78,7 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     btn1Func={()=>{setIsRemovingPlaylist(false)}}
     btn2Func={()=>{removePlaylist(playList?.id)}}
     />}
+    {addVideoModalIsOpen === true && <AddVideosModal playList={playList} closeAddVideoModal={closeAddVideoModal} />}
     </>
   )
 }

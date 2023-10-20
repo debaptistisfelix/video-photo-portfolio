@@ -5,6 +5,11 @@ import AdminContent from '@/app/COMPONENTS/CLOUDINARY/ADMINSECTION/AdminContent'
 import cloudinary from 'cloudinary';
 import backgroundImg from '@/public/paris.jpg'
 
+export const metadata = {
+  title: 'Simone Capozzi - Dashboard',
+  description: 'Portfolio Foto & Video Maker',
+}
+
 export default async function Page() {
   cloudinary.v2.api
 .resources()

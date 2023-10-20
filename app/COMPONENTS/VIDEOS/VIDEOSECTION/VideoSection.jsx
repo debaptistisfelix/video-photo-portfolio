@@ -60,7 +60,7 @@ export default function VideoSection() {
   return (
     <section className={styles.videoSection}>
     {fetchVideosState.loading === true && <div className={styles.loaderContainer}>
-  <Loader />
+  <Loader color="#ffffff" />
   <h1 className={styles.fetchLoading}>Loading</h1>
   </div>}
   {fetchVideosState.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
