@@ -151,6 +151,7 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
                     ...loadingState,
                     searchingVideoInfos: false,
                 }) 
+                console.log(response)
             } else {
                 const data = await response.json()
                 const videoDuration = convertDuration(data.items[0].contentDetails.duration);
