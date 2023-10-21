@@ -14,7 +14,7 @@ export default function VideoCategory({video}) {
   const [imageLoadingCompleted, setImageLoadingCompleted] = useState(false)
     const router = useRouter();
 
-    console.log(video)
+
   
   return (
     <div  className={styles.videoCategoryContainer}>

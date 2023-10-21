@@ -137,7 +137,6 @@ export default function VideoGallery() {
                     notify("Errore durante creazione della playlist", "error")
             } else {
                 const data = await response.json();
-                console.log(data)
                 setPlaylists((prevPlaylists) => [...prevPlaylists, data]);
                 setRemovingLoadingState({
                     loading: false,

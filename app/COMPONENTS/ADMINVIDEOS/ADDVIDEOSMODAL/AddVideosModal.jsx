@@ -151,7 +151,6 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
                     ...loadingState,
                     searchingVideoInfos: false,
                 }) 
-                console.log(response)
             } else {
                 const data = await response.json()
                 const videoDuration = convertDuration(data.items[0].contentDetails.duration);
@@ -182,8 +181,6 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
       const resetNewVideosInfos = () => {
         setNewVideoInfos(null);
       };
-
-      console.log("newVideoInfos: ", newVideoInfos)
 
       const createNewVideoForPlaylist = async (newVideo) => {
         setLoadingState({
