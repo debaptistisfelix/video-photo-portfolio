@@ -35,7 +35,9 @@ export default function VideoSection() {
                 })
             } else {
                 const data = await response.json();
-                setPlaylists(data);
+                console.log(data)
+                const playlistsWithYoutubeVideos = data.filter(playlist => playlist.youtubeVideos.length > 0);
+                setPlaylists(playlistsWithYoutubeVideos);
                 setFetchVideosState({
                     loading: false,
                     error: false
@@ -63,12 +65,14 @@ export default function VideoSection() {
   <Loader color="#ffffff" />
   <h1 className={styles.fetchLoading}>Loading</h1>
   </div>}
-  {fetchVideosState.error === true && <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
-       {playlists !== null && fetchVideosState.loading !== true && fetchVideosState.error !== true && playlists.map((video, index) => {
-            return (
-                <VideoCategory key={index} video={video} />
-            )
-        })}
+  {fetchVideosState.error === true && <div className={styles.loaderContainer}><h1 className={styles.fetchError}>Errore nella richiesta al server.</h1></div>}
+       {playlists !== null && fetchVideosState.loading !== true && fetchVideosState.error !== true && playlists.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+}).map((video, index) => {
+    return (
+        <VideoCategory key={index} video={video} />
+    )
+})}
     </section>
   )
 }

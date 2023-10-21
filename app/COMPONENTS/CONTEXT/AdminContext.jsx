@@ -10,8 +10,10 @@ export default function AdminContextProvider({children}) {
     const [checkedCheckboxes, setCheckedCheckboxes] = useState([]);
     const [isRemovingImages, setIsRemovingImages] = useState(false);
     const [playlists, setPlaylists] = useState(null);
-    const [isRemovingPlaylist, setIsRemovingPlaylist] = useState(false);
     const [addingToPlaylist, setAddingToPlaylist] = useState(false);
+
+
+
 
     return (
         <AdminContext.Provider value={{
@@ -24,8 +26,7 @@ export default function AdminContextProvider({children}) {
             checkedCheckboxes, setCheckedCheckboxes,
             isRemovingImages, setIsRemovingImages,
             playlists, setPlaylists,
-            isRemovingPlaylist, setIsRemovingPlaylist,
-            addingToPlaylist, setAddingToPlaylist
+            addingToPlaylist, setAddingToPlaylist,
         }}>
             {children}
         </AdminContext.Provider>

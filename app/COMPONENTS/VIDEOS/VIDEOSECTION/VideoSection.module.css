@@ -29,9 +29,14 @@
   letter-spacing: 2px;
   font-weight: 400;
   font-size: 18px;
-  margin: 50px auto;
   box-sizing: border-box;
   text-align: center;
+}
+
+.fetchError{
+  text-align: center;
+  width: 100%;
+
 }
 
 .fetchLoading{

@@ -4,18 +4,17 @@ import { useState, useEffect, useRef,useContext } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { AdminContext } from '../../CONTEXT/AdminContext';
 import Modal from '../../MODAL/Modal';
 import AddVideosModal from '../ADDVIDEOSMODAL/AddVideosModal';
 
 export default function AdminPlaylist({playList, removePlaylist}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const {isRemovingPlaylist, setIsRemovingPlaylist} = useContext(AdminContext);
+  const [isRemovingPlaylist, setIsRemovingPlaylist] = useState(false);
     const modalRef = useRef(null);
     const barsIconRef = useRef(null);
     const [addVideoModalIsOpen, setAddVideoModalIsOpen] = useState(false);
 
-    
+
     const toggleModal = () => {
         setModalIsOpen(!modalIsOpen);
     }
@@ -27,6 +26,11 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     const closeAddVideoModal = () => {
         setAddVideoModalIsOpen(false);
     }
+
+    const closeVideoModalRemovePlaylist = () => {
+        setIsRemovingPlaylist(false);
+    }
+
 
     useEffect(()=>{
         const handleClickOutsideModal = (e) => {
@@ -72,11 +76,14 @@ export default function AdminPlaylist({playList, removePlaylist}) {
         <h1 className={styles.title}>{playList?.title}</h1>
     </div>
     {isRemovingPlaylist === true && <Modal
-    parag="Eliminare questa Playlist?"
+    parag={`Eliminare la Playlist'${playList?.title}'?`}
     btn1Text="Annulla"
     btn2Text="Conferma"
     btn1Func={()=>{setIsRemovingPlaylist(false)}}
-    btn2Func={()=>{removePlaylist(playList?.id)}}
+    btn2Func={()=>{
+        setIsRemovingPlaylist(false)
+        removePlaylist(playList?.id)
+    }}
     />}
     {addVideoModalIsOpen === true && <AddVideosModal playList={playList} closeAddVideoModal={closeAddVideoModal} />}
     </>

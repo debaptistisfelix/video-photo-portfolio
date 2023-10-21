@@ -12,6 +12,9 @@ export async function GET(request, {params}){
         const playlist = await prisma.playlist.findUnique({
             where: {
                 id:id
+            },
+            include:{
+                youtubeVideos: true
             }
         });
 

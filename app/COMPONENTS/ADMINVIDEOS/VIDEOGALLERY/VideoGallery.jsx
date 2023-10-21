@@ -11,7 +11,7 @@ import AddPlaylistModal from '../ADDPLAYLISTMODAL/AddPlaylistModal';
 import notify from '@/lib/toastNotify';
 
 export default function VideoGallery() {
-    const {playlists, setPlaylists,  isRemovingPlaylist, setIsRemovingPlaylist, addingToPlaylist, setAddingToPlaylist} = useContext(AdminContext);
+    const {playlists, setPlaylists, addingToPlaylist, setAddingToPlaylist} = useContext(AdminContext);
     const [fetchVideosState, setFetchVideosState] = useState({
         loading: true,
         error: false
@@ -74,7 +74,6 @@ export default function VideoGallery() {
     },[])
 
     const removePlaylist = async (playlistId) => {
-        setIsRemovingPlaylist(false);
         setRemovingLoadingState({
             loading: true,
             success: false,
@@ -137,7 +136,7 @@ export default function VideoGallery() {
                     notify("Errore durante creazione della playlist", "error")
             } else {
                 const data = await response.json();
-                setPlaylists((prevPlaylists) => [...prevPlaylists, data]);
+                setPlaylists((prevPlaylists) => [data, ...prevPlaylists]);
                 setRemovingLoadingState({
                     loading: false,
                     success: true,

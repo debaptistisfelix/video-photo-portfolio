@@ -11,11 +11,14 @@ export async function GET(request){
                 youtubeVideos: true
             }
         });
-        console.log(allPlaylists);
+        
+        const sortedPlaylist = allPlaylists.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
     
         request.headers.set('Cache-Control', 'no-store');
 
-        return new Response(JSON.stringify(allPlaylists), {status: 200})
+        return new Response(JSON.stringify(sortedPlaylist), {status: 200})
     } catch(error){
         console.log(error)
         return new Response(JSON.stringify("Error while fetching Playlists"), {status: 500})

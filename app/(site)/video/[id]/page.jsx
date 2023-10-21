@@ -2,7 +2,7 @@ import styles from './page.module.css'
  import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
  import Image from 'next/image';
  import backgroundImg from '@/public/paris.jpg'
-
+import PlaylistPage from '@/app/COMPONENTS/VIDEOS/PLAYLISTPAGE/PlaylistPage';
 
  export async function generateMetadata({ params, searchParams }, parent) {
     // read route params
@@ -44,7 +44,8 @@ import styles from './page.module.css'
     }
   } 
 
-export default function Page() {
+export default function Page({params}) {
+  const {id} = params
   return (
     <main className={styles.main}>
       <Navbar />
@@ -52,8 +53,7 @@ export default function Page() {
         style={{width: "100vw", height:"100vh"}} quality={100} priority={true} sizes="100vw"
         placeholder='blur' />
       <section className={styles.content}>
-      <h1 className={styles.title}>Galleria Video</h1>
-
+        <PlaylistPage playlistId={id} />
         </section>
     </main>
   )

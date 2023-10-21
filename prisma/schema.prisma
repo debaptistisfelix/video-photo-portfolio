@@ -12,15 +12,10 @@ datasource db {
 
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?   
   email          String?   @unique
-  image          String?
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  passwordChangedAt DateTime?
-  passwordResetToken String?
-  passwordResetExpires DateTime?
 }
 
 model Playlist {
@@ -41,8 +36,11 @@ model YoutubeVideo {
   duration    String
   thumbnail   String
   link        String
+  youtubeVideoId String
   playlist    Playlist?  @relation(fields: [playlistId], references: [id])
   playlistId  String?    @db.ObjectId
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
 

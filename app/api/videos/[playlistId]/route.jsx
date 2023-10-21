@@ -18,7 +18,13 @@ export async function GET(request, {params}) {
                 playlistId
             }   
         })
-        return new Response(JSON.stringify(youtubeVideos), {status: 200})
+
+        const sortedYoutuveVideos = youtubeVideos.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+                    })
+
+
+        return new Response(JSON.stringify(sortedYoutuveVideos), {status: 200})
     }
     catch(error){
         return new Response(JSON.stringify("Error while fetching Playlist Videos"), {status: 500})

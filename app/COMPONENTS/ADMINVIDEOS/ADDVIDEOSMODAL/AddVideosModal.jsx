@@ -22,6 +22,7 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
     });
     const [newVideoInfos, setNewVideoInfos] = useState(null);
 
+    console.log("playlist in addvideosmodal: ", playList)
 
     useEffect(()=>{
         const handleClickOutsideModal = () => {
@@ -145,6 +146,7 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
         const videoId = params.get('v');
         try{
             const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`)
+            console.log("response: ", response)
             if(!response.ok){
                 notify("Errore durante il caricamento delle informazioni sul video", "error")
                 setLoadingState({
@@ -153,12 +155,14 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
                 }) 
             } else {
                 const data = await response.json()
+                console.log(data)
                 const videoDuration = convertDuration(data.items[0].contentDetails.duration);
                 const necessaryInfos = {
                     title: data.items[0].snippet.title,
                     duration: videoDuration,
-                    thumbnail: data.items[0].snippet.thumbnails.default.url,
+                    thumbnail: data.items[0].snippet.thumbnails.high.url,
                     link: url,
+                    youtubeVideoId: videoId,
                 }
                 setNewVideoInfos(necessaryInfos);
                 setLoadingState({
@@ -204,7 +208,7 @@ export default function AddVideosModal({playList, closeAddVideoModal}) {
             } else {
                 notify("Video aggiunto con successo", "success")
                 const data = await response.json();
-                setVideos([...videos, data]);
+                setVideos([data, ...videos ]);
                 setLoadingState({
                     ...loadingState,
                     gettingVideos: false,
