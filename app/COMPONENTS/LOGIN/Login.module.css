@@ -1,0 +1,142 @@
+.loginCard{
+    width: 500px;
+    height: 500px;
+    border-radius: 20px;
+    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
+    gap: 30px;
+  }
+
+  .profilePic{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+  }
+
+  .title{
+    font-size: 20px;
+    color: #191919;
+  }
+
+  .form{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    gap: 30px;
+  }
+
+  .input{
+    width: 100%;
+    height: 42px;
+    background-color: transparent;
+    border: 1px solid #191919;
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    outline: none;
+    color: #191919;
+  }
+
+  .input::placeholder{
+    color: #191919
+  }
+
+  .input:focus{
+    border: 2px solid #191919;
+  }
+
+  .btn{
+    background-color: #191919;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    width: 100%;
+    height: 42px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+  @media (max-width:500px){
+    .loginCard{
+     background-color: transparent;
+     max-width: 90vw;
+     border: none;
+     box-shadow: none;
+    }
+
+    .title{
+        color: white;
+    }
+
+    .form{
+        width: 100%;
+    max-width: 400PX;}
+
+    .input{
+        border: 1px solid white;
+        color: white;
+    }
+    .input:focus{
+        border: 2px solid white;
+      }
+    .input::placeholder{
+        color: white;
+    }
+
+    .btn{
+        background-color: white;
+        color: #191919;
+
+    }
+  }
+
+  @media (max-width:500px) and (hover:none) and (pointer:coarse){
+    .loginCard{
+        background-color: transparent;
+        max-width: 90vw;
+        border: none;
+        box-shadow: none;
+       }
+
+       .profilePic{
+        border-radius: 50%;
+        width: clamp(120px, 42.15vw + 0.12rem, 150px);
+        height: clamp(120px, 42.15vw + 0.12rem, 150px);
+       }
+   
+       .title{
+           color: white;
+           font-size: clamp(18px, 5.72vw + 0.12rem, 20px);
+       }
+   
+       .form{
+           width: 100%;
+       max-width: 250PX;}
+   
+       .input{
+           border: 1px solid white;
+           color: white;
+       }
+       .input:focus{
+           border: 2px solid white;
+         }
+       .input::placeholder{
+           color: white;
+       }
+   
+       .btn{
+           background-color: white;
+           color: #191919;
+   
+       }
+  }

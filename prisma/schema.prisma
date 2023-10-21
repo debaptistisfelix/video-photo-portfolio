@@ -10,9 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model PortfolioAdmin {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  email          String?   @unique
+  username          String?   @unique
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
