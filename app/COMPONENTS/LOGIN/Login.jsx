@@ -4,7 +4,6 @@ import styles from './Login.module.css'
 import { useState } from 'react'
 import ProfilePicture from "@/public/capozzo.jpg"
 import Image from 'next/image'
-import { signIn } from "next-auth/react"
 import notify from '@/lib/toastNotify'
 import { useRouter } from 'next/navigation'
 
@@ -12,7 +11,7 @@ export default function Login() {
     const [data, setData] = useState({username: '', password: ''})
     const router = useRouter()
 
-    const handleSubmit = async () => {
+ /*    const handleSubmit = async () => {
         if(!data.username || !data.password) return notify('Inserisci tutti i campi', 'error')
        const result = await signIn('credentials', {
             redirect: false,
@@ -26,7 +25,7 @@ export default function Login() {
             notify('Login effettuato con successo', 'success')
             router.push('/admin')
         }
-    }
+    } */
 
   return (
     <div className={styles.loginCard}>
@@ -39,7 +38,7 @@ export default function Login() {
             <input placeholder='Password' onChange={()=>{
                 setData({...data, password: event.target.value})
             }} value={data.password} type="password" className={styles.input} />
-            <div onClick={handleSubmit} className={styles.btn}>Sign In</div>
+            <div className={styles.btn}>Sign In</div>
         </form>
     </div>
   )
