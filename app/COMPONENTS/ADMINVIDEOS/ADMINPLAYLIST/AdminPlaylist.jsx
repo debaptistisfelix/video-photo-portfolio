@@ -11,7 +11,7 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isRemovingPlaylist, setIsRemovingPlaylist] = useState(false);
     const modalRef = useRef(null);
-    const barsIconRef = useRef(null);
+    const imgRef = useRef(null);
     const [addVideoModalIsOpen, setAddVideoModalIsOpen] = useState(false);
 
 
@@ -35,7 +35,7 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     useEffect(()=>{
         const handleClickOutsideModal = (e) => {
             if(modalRef.current && !modalRef.current.contains(e.target)){
-                if(!barsIconRef.current.contains(e.target)){
+                if(!imgRef.current.contains(e.target)){
                     setModalIsOpen(false);
                 }
             }
@@ -51,10 +51,10 @@ export default function AdminPlaylist({playList, removePlaylist}) {
     <>
     <div className={styles.container}>
         <div className={styles.imgContainer}>
-            <Image src={`${playList?.bannerImg.url}`} width={200} height={100} alt="banner-img" sizes='100vw'
+            <Image ref={imgRef} onClick={toggleModal} src={`${playList?.bannerImg.url}`} width={200} height={100} alt="banner-img" sizes='100vw'
             className={styles.img}
             />
-            <FontAwesomeIcon ref={barsIconRef} onClick={toggleModal} icon={faBars} className={styles.barsIcon}/>
+           {/*  <FontAwesomeIcon ref={barsIconRef} onClick={toggleModal} icon={faBars} className={styles.barsIcon}/> */}
             {modalIsOpen === true && <div ref={modalRef} className={styles.imgModal}>
                 <span
                 onClick={()=>{

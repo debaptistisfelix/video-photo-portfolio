@@ -8,6 +8,7 @@
     row-gap: 0px;
     column-gap: 20px;
     position: relative;
+    justify-content: center;
   /*   border: 1px solid white; */
 }
 

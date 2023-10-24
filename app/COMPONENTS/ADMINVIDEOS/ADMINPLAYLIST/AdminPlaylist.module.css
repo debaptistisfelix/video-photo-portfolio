@@ -14,7 +14,7 @@
     height: fit-content;
     border-radius: 20px;
     position: relative;
- 
+    cursor: pointer;
 }
 
 
@@ -27,7 +27,7 @@
 
 }
 
-.barsIcon{
+/* .barsIcon{
     position: absolute;
     top: 15px;
     left: 85%;
@@ -41,7 +41,7 @@
     transition: all 0.3s ease-in-out;
     box-sizing: border-box;
     border: 1px solid transparent;
-}
+} */
 
 .title{
     margin: 20px 0;
