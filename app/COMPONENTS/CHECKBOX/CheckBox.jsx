@@ -8,9 +8,10 @@ export default function CheckBox({ label, checked, onChange }) {
     <label className={styles.customCheckbox}>
       <input type="checkbox" checked={checked} onChange={onChange} />
       <span className={styles.checkboxLabel}>
-        <FontAwesomeIcon
+        {label}
+        {/* <FontAwesomeIcon
   
-        icon={checked === true ? faX : faTrash} className={styles.trashIcon} />
+        icon={checked === true ? faX : faTrash} className={styles.trashIcon} /> */}
       </span>
     </label>
   )

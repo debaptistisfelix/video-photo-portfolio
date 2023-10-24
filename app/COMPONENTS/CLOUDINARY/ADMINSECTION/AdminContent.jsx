@@ -9,12 +9,13 @@ import { AdminContext } from '../../CONTEXT/AdminContext';
 
 export default function AdminContent() {
     const [category, setCategory] = useState("video");
-    const {setCheckedCheckboxes} = useContext(AdminContext);
+    const {setCheckedCheckboxesToRemove, setCheckedCheckboxesToAddToAlbum} = useContext(AdminContext);
 
     const handleCategoryChange = (categ) => {
        setCategory(categ);
        if(category !== "foto"){
-        setCheckedCheckboxes([]);
+        setCheckedCheckboxesToRemove([]);
+        setCheckedCheckboxesToAddToAlbum([]);
         setCategory(categ);
        }
     }

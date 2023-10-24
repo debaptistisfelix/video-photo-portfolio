@@ -7,8 +7,12 @@ export default function AdminContextProvider({children}) {
     const [images, setImages] = useState(null);
     const [imagesForUser, setImagesForUser] = useState(null);
     const [fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete] = useState(false);
-    const [checkedCheckboxes, setCheckedCheckboxes] = useState([]);
+    const [checkedCheckboxesToRemove, setCheckedCheckboxesToRemove] = useState([]);
+    const [checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum] = useState([]);
+    const [checkedCheckboxToRemoveFromAlbum, setCheckedCheckboxToRemoveFromAlbum] = useState([]);
     const [isRemovingImages, setIsRemovingImages] = useState(false);
+    const [modalToAddToAlbumIsOpen, setModalToAddToAlbumIsOpen] = useState(false);
+    const [modalToRemoveFromAlbumIsOpen, setModalToRemoveFromAlbumIsOpen] = useState(false);
     const [playlists, setPlaylists] = useState(null);
     const [addingToPlaylist, setAddingToPlaylist] = useState(false);
 
@@ -23,8 +27,12 @@ export default function AdminContextProvider({children}) {
             setImagesForUser,
             fullScreenImageLoadedComplete,
             setFullScreenImageLoadedComplete,
-            checkedCheckboxes, setCheckedCheckboxes,
+            checkedCheckboxesToRemove, setCheckedCheckboxesToRemove,
+            checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum,
+            checkedCheckboxToRemoveFromAlbum, setCheckedCheckboxToRemoveFromAlbum,
             isRemovingImages, setIsRemovingImages,
+            modalToAddToAlbumIsOpen, setModalToAddToAlbumIsOpen,
+            modalToRemoveFromAlbumIsOpen, setModalToRemoveFromAlbumIsOpen,
             playlists, setPlaylists,
             addingToPlaylist, setAddingToPlaylist,
         }}>

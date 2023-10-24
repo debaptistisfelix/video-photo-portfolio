@@ -6,6 +6,7 @@ import { useState, useContext } from "react";
 import { useEffect } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
+import UserImage from './USERIMAGE/UserImage';
 
 export default function UserGallery() {
     const [windowWidth, setWindowWidth] = useState(null);
@@ -171,7 +172,7 @@ export default function UserGallery() {
     style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
     >
      {windowWidth !== null && visibleImages !== null && visibleImages.map((image, index) => {
-        return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+        return <UserImage key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
         handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
       })}
 

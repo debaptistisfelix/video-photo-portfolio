@@ -53,6 +53,11 @@
         height: 90%
         
     }
+    .closeIcon{
+        display: block;
+        top: 80px;
+        right: 20px;
+    }
 }
 
 

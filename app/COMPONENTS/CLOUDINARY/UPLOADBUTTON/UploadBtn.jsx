@@ -9,10 +9,11 @@ export default function UploadBtn() {
 
   const handleUploadAndAddToImages = (result) => {
     const newImage = {
-      width: result.info.width,
+      ...result.info
+      /* width: result.info.width,
       height: result.info.height,
       public_id: result.info.public_id,
-      url: result.info.url
+      url: result.info.url */
     }
     setImages([newImage, ...images ]);
     

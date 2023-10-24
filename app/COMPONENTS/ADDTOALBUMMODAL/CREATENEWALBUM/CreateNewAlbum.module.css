@@ -1,0 +1,110 @@
+
+
+.addToNewAlbumContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    height: 50%;
+}
+
+
+.title{
+    font-size: 20px;
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    text-align: center;
+    color: gray;
+
+}
+
+.parag{
+    font-size: 16px;
+    font-weight: 400;
+   width: 90%;
+    text-align: center;
+    color: gray
+  
+}
+.form{
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.input{
+    height: 42px;border-radius: 12px 0 0 12px;
+    border: 1px solid grey;
+    width: 80%;
+    font-size: 16px;
+    padding: 10px;;
+}
+
+.input:focus{
+    outline: none;
+    border: 1px solid rgb(39, 38, 38);
+}
+
+.btn{
+    cursor: pointer;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid grey;
+    color: gray;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 0 12px 12px 0;
+    transition: all;
+}
+
+
+@media (hover:hover) and (pointer: fine){
+    
+
+    .btn:hover{
+        background-color: gray;
+        color: white;
+  }
+  
+}
+
+
+@media (max-width:500px) and (hover:none) and (pointer: coarse){
+
+    .title{
+        font-size: clamp(16px, 4.72vw + 0.12rem, 18px);
+    }
+    
+    .parag{
+        font-size: clamp(14px, 4vw + 0.12rem, 18px);
+        font-weight: 400;
+       width: 90%;
+        text-align: center;
+        color: gray
+      
+    }
+
+    .input{
+        height:clamp(36px, 12.15vw + 0.12rem, 42px);
+        font-size: clamp(14px, 4vw + 0.12rem, 18px);
+        background-color: transparent;
+    };
+
+    .btn{
+        height: clamp(36px, 12.15vw + 0.12rem, 42px);
+        font-size: clamp(14px, 4vw + 0.12rem, 16px);
+        color: white;
+        background-color: grey;
+    }
+
+ 
+
+   
+}

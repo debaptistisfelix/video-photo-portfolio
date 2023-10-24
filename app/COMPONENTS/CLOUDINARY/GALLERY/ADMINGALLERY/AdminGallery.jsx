@@ -11,12 +11,15 @@ import RemoveBtn from '../../REMOVEBTN/RemoveBtn';
 import notify from '@/lib/toastNotify';
 import Modal from '@/app/COMPONENTS/MODAL/Modal';
 import FullscreenLoader from '@/app/COMPONENTS/FULLSCREENLOADER/FullscreenLoader';
-
+import AdminImage from './ADMINIMAGE/AdminImage';
+import AddToAlbumBtn from '@/app/COMPONENTS/ADDTOALBUMBTN/AddToAlbumBtn';
+import AddToAlbumModal from '@/app/COMPONENTS/ADDTOALBUMMODAL/AddToAlbumModal';
+import RemoveFromAlbumBtn from '@/app/COMPONENTS/REMOVEFROMALBUMBTN/RemoveFromAlbumBtn';
 
 
 export default function AdminGallery(results) {
   const [windowWidth, setWindowWidth] = useState(null);
-  const {images, setImages, setFullScreenImageLoadedComplete, checkedCheckboxes, setCheckedCheckboxes, isRemovingImages, setIsRemovingImages} = useContext(AdminContext);
+  const {images, setImages, setFullScreenImageLoadedComplete, checkedCheckboxesToRemove, setCheckedCheckboxesToRemove, isRemovingImages, setIsRemovingImages,  checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum, modalToAddToAlbumIsOpen, checkedCheckboxToRemoveFromAlbum, setCheckedCheckboxToRemoveFromAlbum, modalToRemoveFromAlbumIsOpen, setModalToRemoveFromAlbumIsOpen,} = useContext(AdminContext);
   const [visibleImages, setVisibleImages] = useState(null);
   const imagesPerPage = 30;
   const [currentLength, setCurrentLength] = useState(null);
@@ -100,7 +103,7 @@ export default function AdminGallery(results) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          imagesPublicIds: checkedCheckboxes
+          imagesPublicIds: checkedCheckboxesToRemove
         })
       })
       if(!response.ok){
@@ -109,14 +112,14 @@ export default function AdminGallery(results) {
           loading: false,
           success: false,
         })
-        setCheckedCheckboxes([]);
+        setCheckedCheckboxesToRemove([]);
         notify("Errore durante l'eliminazione delle immagini", "error")
       } else {
         const data = await response.json();
       console.log(data)
-      setCheckedCheckboxes([]);
+      setCheckedCheckboxesToRemove([]);
       setImages((prevImages =>{
-        return prevImages.filter((prevImage) => !checkedCheckboxes.includes(prevImage.public_id))
+        return prevImages.filter((prevImage) => !checkedCheckboxesToRemove.includes(prevImage.public_id))
       }))
       setRemovingLoadingState({
         loading: false,
@@ -131,13 +134,37 @@ export default function AdminGallery(results) {
         loading: false,
         success: false,
       })
-      setCheckedCheckboxes([]);
+      setCheckedCheckboxesToRemove([]);
       notify("Errore durante l'eliminazione delle immagini", "error")
     }
   }
 
 
-
+const removeImagesFromAlbum = async () => {
+    try{
+      const response = await fetch("/api/removeFromExistingAlbum", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          imagesToRemoveFromAlbum: checkedCheckboxToRemoveFromAlbum
+        })
+      })
+        const data = await response.json();
+        console.log(data)
+         const filteredImages = images.filter((prevImage) => !checkedCheckboxToRemoveFromAlbum.includes(prevImage.public_id))
+        const updatedImages = [...data,...filteredImages];
+        setImages(updatedImages);
+        setModalToRemoveFromAlbumIsOpen(false);
+        setCheckedCheckboxToRemoveFromAlbum([]);
+        notify("Immagini rimosse dall'album con successo", "success")
+    }
+    catch(error){
+      console.log(error)
+      notify("Errore durante la rimozione dall'album", "error")
+    }
+}
 
     useEffect(()=>{
         const handleWindowResize = () => setWindowWidth(window.innerWidth);
@@ -253,19 +280,56 @@ export default function AdminGallery(results) {
   }
 
 
-  const handleCheckboxChange = (isChecked, imageId) => {
+  const handleCheckboxChangeToRemove = (isChecked, imageId) => {
+    //Add to the array of images to delete
     if (isChecked) {
-      setCheckedCheckboxes((prevCheckeds) =>{
+      setCheckedCheckboxesToRemove((prevCheckeds) =>{
         return [...prevCheckeds, imageId]
       });
+      //Empty the array of images to add to album so you focus on deleteing images
+      setCheckedCheckboxesToAddToAlbum([])
+      setCheckedCheckboxToRemoveFromAlbum([])
     } else {
-      setCheckedCheckboxes((prevCheckeds) =>{
+      //Remove from array of images to delete
+      setCheckedCheckboxesToRemove((prevCheckeds) =>{
         return prevCheckeds.filter((prevChecked) => prevChecked !== imageId);
       });
     }
   };
 
+  const handleCheckboxChangeToAddToAlbum = (isChecked, imageId) => {
+    if (isChecked) {
+      // Add to array of images to add to an album
+      setCheckedCheckboxesToAddToAlbum((prevCheckeds) =>{
+        return [...prevCheckeds, imageId]
+      });
+      // empty the array of images to delete so you focus on adding images to album
+      setCheckedCheckboxesToRemove([])
+      setCheckedCheckboxToRemoveFromAlbum([])
+    } else {
+      //Remove from the array of images to add to album
+      setCheckedCheckboxesToAddToAlbum((prevCheckeds) =>{
+        return prevCheckeds.filter((prevChecked) => prevChecked !== imageId);
+      });
+    }
+  }
 
+  const handleCheckboxChangeToRemoveFromAlbum = (isChecked, imageId) => {
+    if(isChecked){
+      setCheckedCheckboxToRemoveFromAlbum((prevCheckeds) =>{
+        return [...prevCheckeds, imageId]
+      })
+      setCheckedCheckboxesToRemove([])
+      setCheckedCheckboxesToAddToAlbum([])
+    } else {
+      setCheckedCheckboxToRemoveFromAlbum((prevCheckeds) =>{
+        return prevCheckeds.filter((prevChecked) => prevChecked !== imageId);
+      });
+
+    }
+  }
+
+console.log(images)
 
 
   return (
@@ -275,7 +339,9 @@ export default function AdminGallery(results) {
       <div className={styles.categoryNav}>
       <h1 className={styles.bannerTitle}>GALLERIA FOTO <b className={styles.fotoCount}>({Array.isArray(images) ? images?.length : "0"} file)</b></h1>
       <div className={styles.btnContainer}>
-      {checkedCheckboxes && checkedCheckboxes.length !== 0 && <RemoveBtn />}
+      {checkedCheckboxToRemoveFromAlbum && checkedCheckboxToRemoveFromAlbum.length !== 0 && <RemoveFromAlbumBtn />}
+      {checkedCheckboxesToRemove && checkedCheckboxesToRemove.length !== 0 && <RemoveBtn />}
+      {checkedCheckboxesToAddToAlbum && checkedCheckboxesToAddToAlbum.length !== 0 && <AddToAlbumBtn />}
       <UploadBtn />
       </div>
       </div>
@@ -284,8 +350,8 @@ export default function AdminGallery(results) {
       style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
       >
       {windowWidth !== null && images !== null && visibleImages !== null && visibleImages.map((image, index) => {
-        return <ImageContainer key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChange={handleCheckboxChange} checkedCheckboxes={checkedCheckboxes} />
+        return <AdminImage key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  onCheckboxChangeToRemove={handleCheckboxChangeToRemove} onCheckboxChangeToAddToAlbum={handleCheckboxChangeToAddToAlbum}  onCheckboxChangeToReoveFromAlbum={handleCheckboxChangeToRemoveFromAlbum}  />
       })}
       </div>
 
@@ -301,8 +367,10 @@ export default function AdminGallery(results) {
       }
       </section>
       {
-        isRemovingImages === true && <Modal parag={`Eliminare ${checkedCheckboxes?.length} ${checkedCheckboxes?.length > 1 ? "immagini" : "immagine"}?`} btn1Text="Annulla" btn2Text="Conferma" btn1Func={()=>{setIsRemovingImages(false)}} btn2Func={removeImages} />
+        isRemovingImages === true && <Modal parag={`Eliminare ${checkedCheckboxesToRemove?.length} ${checkedCheckboxesToRemove?.length > 1 ? "immagini" : "immagine"}?`} btn1Text="Annulla" btn2Text="Conferma" btn1Func={()=>{setIsRemovingImages(false)}} btn2Func={removeImages} />
       }
+      {modalToRemoveFromAlbumIsOpen == true && <Modal parag={`Rimuovere ${checkedCheckboxToRemoveFromAlbum?.length} ${checkedCheckboxToRemoveFromAlbum?.length > 1 ? "immagini" : "immagine"} dall'album?`} btn1Text="Annulla" btn2Text="Conferma" btn1Func={()=>{setModalToRemoveFromAlbumIsOpen(false)}} btn2Func={removeImagesFromAlbum} />}
+      {modalToAddToAlbumIsOpen == true && <AddToAlbumModal  />}
       {
         removingLoadingState.loading === true && <FullscreenLoader />
       }
