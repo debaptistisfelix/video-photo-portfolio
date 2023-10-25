@@ -7,22 +7,21 @@ import { AdminContext } from "../../CONTEXT/AdminContext";
 export default function UploadBtn() {
   const {images, setImages} = useContext(AdminContext);
 
-  const handleUploadAndAddToImages = (result) => {
-    const newImage = {
-      ...result.info
-      /* width: result.info.width,
-      height: result.info.height,
-      public_id: result.info.public_id,
-      url: result.info.url */
-    }
-    setImages([newImage, ...images ]);
-    
+    const handleQueueEnd = (result) => {
+    const newImagesArrayRaw = result.info.files
+    const newImagesToAddToLibrary = newImagesArrayRaw.map((image)=>{
+      return image.uploadInfo
+    })
+    setImages((prevImages)=>{
+      return [...newImagesToAddToLibrary, ...prevImages]
+    });
   }
   return (
     <>
     <CldUploadButton
-    onUpload={(result) => {
-      handleUploadAndAddToImages(result);
+    
+    onQueuesEnd={(result) => {
+     handleQueueEnd(result);
     }}
     uploadPreset="testing"
     className={styles.uploadCloudinaryBtn} /></>

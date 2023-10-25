@@ -9,10 +9,9 @@ import AlbumList from './ALBUMLIST/AlbumList';
 import notify from '@/lib/toastNotify';
 
 export default function AddToAlbumModal() {
-    const [albums, setAlbums] = useState(null);
     const [selectedAlbum, setSelectedAlbum] = useState(null);
     const modalRef = useRef(null);
-    const { setModalToAddToAlbumIsOpen, checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum, images, setImages } = useContext(AdminContext);
+    const { setModalToAddToAlbumIsOpen, checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum, images, setImages, setFullscreenLoadingState, albums, setAlbums } = useContext(AdminContext);
     const [fetchAlbumsState, setFetchAlbumsState] = useState({
         loading: false,
         error: false,
@@ -25,6 +24,8 @@ export default function AddToAlbumModal() {
             setSelectedAlbum(album);
         }
     }
+
+    console.log("albums", albums)
 
     useEffect(()=>{
         const handleClickOutsideModal = (e) => {
@@ -81,10 +82,8 @@ export default function AddToAlbumModal() {
             notify("Seleziona un album", "error");
         }
         try {
-            setFetchAlbumsState({
-                loading: true,
-                error:false
-            })
+            setModalToAddToAlbumIsOpen(false);
+            setFullscreenLoadingState(true)
             const response = await fetch("/api/addToExistingAlbum",{
                 method:"POST",
                 headers: {
@@ -97,30 +96,29 @@ export default function AddToAlbumModal() {
             });
             if(response.ok){
                 const data = await response.json();
-                console.log(data)
-                /* const filteredImages = images.filter(image => !checkedCheckboxesToAddToAlbum.includes(image.public_id));
+                const filteredImages = images.filter(image => !checkedCheckboxesToAddToAlbum.includes(image.public_id));
                 const updatedImages = [...data, ...filteredImages];
-                setImages(updatedImages); */
-                setFetchAlbumsState({
-                    loading: false,
-                    error:false
-                })
+                const sortedUpdatesImages = updatedImages.sort((a, b) => {
+                    if (a.folder < b.folder) {
+                        return -1;
+                    }
+                    if (a.folder > b.folder) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                setImages(sortedUpdatesImages);
                 notify("Immagini aggiunte all'album", "success");
                 setSelectedAlbum(null);
-                setModalToAddToAlbumIsOpen(false);
+                setCheckedCheckboxesToAddToAlbum([]);
+                setFullscreenLoadingState(false)
             }else {
-                setFetchAlbumsState({
-                    loading: false,
-                    error:false
-                })
+                setFullscreenLoadingState(false)
                 notify("Errore durante l'aggiunta delle immagini all'album", "error");
             }
         } catch (error) {
             console.log(error);
-            setFetchAlbumsState({
-                loading: false,
-                error:false
-            })
+            setFullscreenLoadingState(false)
             notify("Errore durante l'aggiunta delle immagini all'album", "error");
         }
     }

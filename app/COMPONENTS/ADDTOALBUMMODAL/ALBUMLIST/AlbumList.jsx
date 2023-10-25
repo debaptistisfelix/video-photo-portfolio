@@ -8,6 +8,7 @@ export default function AlbumList({albums, fetchAlbumsState, selectAlbum, select
     <div className={styles.addToExistingAlbumsContainer}>
                 <h1 className={styles.title}>Aggiungi ad Album esistente</h1>
                 <div className={styles.albumList}>
+                    {albums && albums.length === 0 && <p className={styles.parag}>Non hai ancora creato alcun album</p>}
                     {fetchAlbumsState.error === true && <p className={styles.parag}>Errore durante il caricamento degli album</p>}   
                     {fetchAlbumsState.loading === true && <div className={styles.fetchLoadingContainer}><Loader color="lightgrey" /></div>}
                     {albums !== null && fetchAlbumsState.loading === false && fetchAlbumsState.error === false && albums.map((album, index)=>{
@@ -15,7 +16,7 @@ export default function AlbumList({albums, fetchAlbumsState, selectAlbum, select
                     })}
                 </div>
                 {
-                    selectedAlbum !== null && <div onClick={addToExistingAlbum} className={styles.btn}>Aggiungi</div>
+                    selectedAlbum !== null && fetchAlbumsState.loading === false && <div onClick={addToExistingAlbum} className={styles.btn}>Aggiungi</div>
                 }
             </div>
   )

@@ -10,18 +10,35 @@ import { TouchContext } from "@/app/COMPONENTS/CONTEXT/TouchContext";
 
 
 
-export default function UserImage({image, visibleImages, windowWidth, getSizeFromWidth, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage}) {
-    const [photoSpans, setPhotoSpans] = useState(250);
-    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete, } = useContext(AdminContext);
+export default function UserImage({image, visibleImages, openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage}) {
+  //Variables from the AdminContext
+    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete, windowWidth, getSizeFromWidth } = useContext(AdminContext);
+
+    //Image loading state
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
+
+    // Refs to handle full screen mode
     const fullScreenImgRef = useRef(null);
     const fullScreenBlackContainerRef = useRef(null);
+
+    // Touch context to handle swipe functionality on mobile screens
     const { touchEnd, handleTouchStart, handleTouchEnd, handleSwipe} = useContext(TouchContext);
+
+
+  //Image resize functionality
+    const [photoSpans, setPhotoSpans] = useState(250);
+
+  //Function that sets how may rows the image will span based on the image height and width
+  const setRowSpan = (image) => {
+      const imageWidth = getSizeFromWidth();
+       const aspectRatio = image.height / image.width;
+       const galleryHeight = Math.ceil(imageWidth * aspectRatio);
+       const photoSpans = Math.ceil(galleryHeight / 10) + 1
+       setPhotoSpans(photoSpans);
+   }
+
+
   
-
-
-
-
   const imageIndex = visibleImages.indexOf(image);
 
     useEffect(()=>{
@@ -38,23 +55,10 @@ export default function UserImage({image, visibleImages, windowWidth, getSizeFro
     },[])
 
 
-
-    // Set row span for image for grid layout
-    const setRowSpan = () => {
-       const imageWidth = getSizeFromWidth();
-        const aspectRatio = image.height / image.width;
-        const galleryHeight = Math.ceil(imageWidth * aspectRatio);
-        const photoSpans = Math.ceil(galleryHeight / 10) + 1
-        setPhotoSpans(photoSpans);
-    }
-
     useEffect(()=>{
       //recalculate row span when window width or images change
-        setRowSpan();
+        setRowSpan(image);
     },[windowWidth, images, visibleImages])
-
-    // Swipe functionality
-
 
 
     useEffect(()=>{

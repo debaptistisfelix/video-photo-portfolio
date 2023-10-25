@@ -11,7 +11,7 @@ export async function POST(request) {
     try{
 
         let updatedImages = [];
-        if(imagesToRemoveFromAlbum.length >1){
+        if(imagesToRemoveFromAlbum.length > 1){
             for(let image of imagesToRemoveFromAlbum){
                 const publicIdSplitted = image.split("/");
                 const publicdId = publicIdSplitted[1];
@@ -34,7 +34,7 @@ export async function POST(request) {
             })
         }
 
-        console.log("udated images: ", updatedImages)
+        console.log("updated images: ", updatedImages)
 
         return new Response(JSON.stringify(updatedImages), {status:200})
     

@@ -6,7 +6,7 @@ import notify from '@/lib/toastNotify';
 
 export default function CreateNewAlbum() {
     const [newAlbum, setNewAlbum] = useState("");
-    const {checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum, setModalToAddToAlbumIsOpen, images, setImages}  = useContext(AdminContext);
+    const {checkedCheckboxesToAddToAlbum, setCheckedCheckboxesToAddToAlbum, setModalToAddToAlbumIsOpen, images, setImages, setFullscreenLoadingState, albums, setAlbums}  = useContext(AdminContext);
 
     const handleSubmit = async () => {
        if(newAlbum === ""){
@@ -14,6 +14,8 @@ export default function CreateNewAlbum() {
         return
        } 
         try{
+            setModalToAddToAlbumIsOpen(false);
+            setFullscreenLoadingState(true);
             const response = await fetch("/api/createNewAlbum", {
                 method:"POST",
                 header:{
@@ -25,22 +27,30 @@ export default function CreateNewAlbum() {
                 })
             })
                 const data = await response.json();
+                console.log("data from creating new album route", data)
                 const filteredImages = images.filter(image => !checkedCheckboxesToAddToAlbum.includes(image.public_id));
                 const updatedImages = [...data, ...filteredImages];
-                setImages(updatedImages);
+                const sortedUpdatesImages = updatedImages.sort((a, b) => {
+                    if (a.folder < b.folder) {
+                        return -1;
+                    }
+                    if (a.folder > b.folder) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                setImages(sortedUpdatesImages);
                 notify("album creato con successo e immagine aggiunta", "success")
                 setNewAlbum("");
                 setCheckedCheckboxesToAddToAlbum([]); 
-                setModalToAddToAlbumIsOpen(false); 
+                setFullscreenLoadingState(false);
         }catch(error){
             console.log(error);
+            setFullscreenLoadingState(false);
             notify("errore nella creazione dell'albumFINAL", "error")
         }
     }
-    const filterImages = () => {
-        const filteredImages = images.filter(image => !checkedCheckboxesToAddToAlbum.includes(image.public_id));
-        setImages(filteredImages);
-    }
+    
   return (
     <div className={styles.addToNewAlbumContainer}>
                 <h1 className={styles.title}>Crea nuovo Album</h1>

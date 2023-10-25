@@ -34,6 +34,32 @@
     }
 }
 
+.albumTag{
+    position: absolute;
+    bottom: 20px;
+    background-color: grey;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+.albumTagIcon{
+    width: 16px;
+    height: 16px;
+}
+
+.albumTagName{
+    font-size: 12px;
+    font-weight: 600;
+}
+
 
 
 .loadingDiv{
@@ -246,6 +272,19 @@
 
 
 @media (max-width:500px) {
+    .albumTag{
+        padding: 5px 10px; 
+    }
+    
+    .albumTagIcon{
+        width: 16px;
+        height: 16px;
+    }
+    
+    .albumTagName{
+        font-size: 12px;
+        font-weight: 600;
+    }
 
     .fullScreenImg{
         width: 90%;
@@ -266,6 +305,24 @@
 
 
 @media (max-width:500px) and (hover: none) and (pointer: coarse)  {
+    .albumTag{
+     
+    
+      
+        padding: 5px 10px;
+   
+     
+    }
+    
+    .albumTagIcon{
+        width: clamp(16px, 4.72vw + 0.12rem, 18px);
+        height: clamp(16px, 4.72vw + 0.12rem, 18px);
+    }
+    
+    .albumTagName{
+        font-size: clamp(12px, 3.58vw + 0.12rem, 14px);
+        font-weight: 600;
+    }
     .loadingText{
         letter-spacing: 1px;
         font-size: clamp(10px, 2.86vw + 0.12rem, 12px);
@@ -311,6 +368,19 @@
 }
 
 @media (min-width:501px) and (hover:none) and (pointer: coarse) {
+    .albumTag{
+        padding: 5px 10px; 
+    }
+    
+    .albumTagIcon{
+        width: 16px;
+        height: 16px;
+    }
+    
+    .albumTagName{
+        font-size: 12px;
+        font-weight: 600;
+    }
     .fullScreenImg{
         width: 70%;
         height: auto;

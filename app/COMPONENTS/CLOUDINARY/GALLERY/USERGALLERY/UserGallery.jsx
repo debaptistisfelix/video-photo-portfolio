@@ -9,25 +9,33 @@ import Loader from '@/app/COMPONENTS/LOADER/Loader';
 import UserImage from './USERIMAGE/UserImage';
 
 export default function UserGallery() {
-    const [windowWidth, setWindowWidth] = useState(null);
-    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete} = useContext(AdminContext);
+  //Variables and functions from the AdminContext
+    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete, windowWidth, setWindowWidth,
+      handleWindowResize,
+      getSizeFromWidth} = useContext(AdminContext);
+
+    //Images visible on the screen
     const [visibleImages, setVisibleImages] = useState(null);
     const imagesPerPage = 30;
+
+    //State variable to handle full screen mode
     const [fullScreenState, setFullScreenState] = useState({
       isOpen: false,
       currentIndex: null
     });
+
+    //State variable to handle the loading state of the images
     const [fetchDataStates, setFetchDataStates] = useState({
-      success: false,
       loading: true,
       error:false
     })
 
 
+
+
     const fetchImages = async () => {
       try {
         setFetchDataStates({
-          success: false,
           loading: true,
           error:false
         })
@@ -40,23 +48,29 @@ export default function UserGallery() {
         });
         if(!response.ok){
           setFetchDataStates({
-            success: false,
             loading: false,
             error:true
           })
         }
         const data = await response.json();
         if(Array.isArray(data)){
-          setImagesForUser(data);
+          const sortedArray = data.sort((a, b) => {
+            if (a.folder < b.folder) {
+                return -1;
+            }
+            if (a.folder > b.folder) {
+                return 1;
+            }
+            return 0;
+        });
+          setImagesForUser(sortedArray);
         setFetchDataStates({
-          success: true,
           loading: false,
           error:false 
         })
         } else {
           setImagesForUser(null)
           setFetchDataStates({
-            success: false,
             loading: false,
             error:true
           })
@@ -64,21 +78,20 @@ export default function UserGallery() {
       } catch (error) {
         console.log(error)
         setFetchDataStates({
-          success: false,
           loading: false,
           error:true
         })
       }
     }
 
-    useEffect(()=>{
-        const handleWindowResize = () => setWindowWidth(window.innerWidth);
+    
 
+   
+
+    useEffect(()=>{
         handleWindowResize();
 
         fetchImages();
-
-  
 
         window.addEventListener("resize", handleWindowResize);
 
@@ -86,21 +99,15 @@ export default function UserGallery() {
     },[])
 
     useEffect(()=>{
+      //Once the images are fetched, show only 30 images
       if(imagesForUser !== null){
+        //Show only 30 images results when page loads
         setVisibleImages(imagesForUser.slice(0, imagesPerPage));
       }
     }, [imagesForUser])
 
 
-    const getSizeFromWidth = () => {
-        if(windowWidth <= 500){
-            return "150";
-        } else if(windowWidth > 500 && windowWidth <= 800){
-            return "150";
-        } else if(windowWidth > 800){
-            return "250";
-        }
-    }
+   
 
     const handleLoadMore = () => {
       const currentLengthIndex = visibleImages.length;
@@ -172,24 +179,25 @@ export default function UserGallery() {
     style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
     >
      {windowWidth !== null && visibleImages !== null && visibleImages.map((image, index) => {
-        return <UserImage key={index} image={image} visibleImages={visibleImages} windowWidth={windowWidth} getSizeFromWidth={getSizeFromWidth} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
+        return <UserImage key={index} image={image} visibleImages={visibleImages} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
         handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
       })}
 
      
 
     </section>
+
    {
       imagesForUser !== null && fetchDataStates.success === true && visibleImages !== null &&  visibleImages.length < imagesForUser.length &&
       <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
     }
 
-{fetchDataStates.loading === true && <div className={styles.loaderContainer}>
-  <Loader color="#ffffff" />
-  <h1 className={styles.fetchLoading}>Loading</h1>
-  </div>}
+    {fetchDataStates.loading === true && <div className={styles.loaderContainer}>
+      <Loader color="#ffffff" />
+      <h1 className={styles.fetchLoading}>Loading</h1>
+      </div>}
 
-{fetchDataStates.error === true && visibleImages === null &&  <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
+    {fetchDataStates.error === true && visibleImages === null &&  <h1 className={styles.fetchError}>Errore nella richiesta al server.</h1>}
 
     </>
   )

@@ -4,9 +4,9 @@ import { useContext } from 'react';
 import { AdminContext } from '../../CONTEXT/AdminContext';
 
 export default function RemoveBtn() {
-  const {setIsRemovingImages} = useContext(AdminContext);
+  const {setModalToRemoveImagesIsOpen} = useContext(AdminContext);
   return (
-    <div onClick={()=>{setIsRemovingImages(true)}} className={styles.btn}>
+    <div onClick={()=>{setModalToRemoveImagesIsOpen(true)}} className={styles.btn}>
         Remove
     </div>
   )

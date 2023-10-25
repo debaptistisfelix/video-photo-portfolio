@@ -1,0 +1,84 @@
+
+
+.albumsContainer{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+    padding-bottom: 20px;
+    box-sizing: border-box;
+
+}
+
+.albumBtn{
+    padding: 10px 20px;
+    border:        2px solid white;
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.albumBtn.active{
+    background-color: white;
+    color: gray;
+}
+
+
+@media (hover:hover) and (pointer: fine){
+  
+    .albumBtn:hover{
+       background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .albumBtn.active:hover{
+        background-color: white;
+        color: gray;
+    }
+}
+
+
+
+@media (max-width:1023px){
+
+
+ .albumsContainer{
+    padding-bottom: 20px ;
+    margin-bottom: 0;
+    justify-content:center;
+}
+
+
+
+
+}
+
+@media (max-width:500px) and (hover:none) and (pointer: coarse){
+   .albumsContainer{
+    gap: 10px;
+    justify-content:center;
+   }
+
+    .albumBtn{
+       
+        font-size: clamp(14px, 4vw + 0.12rem, 16px);
+    }
+   
+
+   
+
+   
+}
+
+
+
+
+

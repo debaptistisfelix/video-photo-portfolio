@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model PortfolioAdmin {
+model Capozzi {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   username          String?   @unique
   hashedPassword String?
