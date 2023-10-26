@@ -1,8 +1,6 @@
 "use client"
 import styles from './UserGallery.module.css'
-import { CldImage } from 'next-cloudinary';
-import ImageContainer from '../../IMGCONTAINER/ImageContainer';
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import { useEffect } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
@@ -63,8 +61,6 @@ export default function UserGallery() {
             }
             return 0;
         });
-
-        console.log(sortedArray)
           setImagesForUser(sortedArray);
         setFetchDataStates({
           loading: false,
@@ -133,44 +129,46 @@ export default function UserGallery() {
     setFullScreenImageLoadedComplete(false);
    }
 
-   const handleNextImage = () => {
-    setFullScreenImageLoadedComplete(false);
-    if(fullScreenState.currentIndex === visibleImages.length - 1){
-      setFullScreenState((prevState)=>{
-        return {
-          ...prevState,
-          currentIndex: 0
-        }
-      })
-    } else {
-      const nextImageIndex = fullScreenState.currentIndex + 1;
-      setFullScreenState((prevState)=>{
-        return {
-          ...prevState,
-          currentIndex: nextImageIndex
-        }
-      })
-    }
-  }
+   const handleNextImage = useCallback(
+    () => {
+      setFullScreenImageLoadedComplete(false);
+      if(fullScreenState.currentIndex === visibleImages.length - 1){
+        setFullScreenState((prevState)=>{
+          return {
+            ...prevState,
+            currentIndex: 0
+          }
+        })
+      } else {
+        const nextImageIndex = fullScreenState.currentIndex + 1;
+        setFullScreenState((prevState)=>{
+          return {
+            ...prevState,
+            currentIndex: nextImageIndex
+          }
+        })
+      }
+    },[fullScreenState.currentIndex, visibleImages])
 
-  const handlePrevImage = () => {
-    setFullScreenImageLoadedComplete(false);
-    if(fullScreenState.currentIndex === 0){
-      setFullScreenState((prevState)=>{
-        return {
-          ...prevState,
-          currentIndex: visibleImages.length - 1
-    }})
-    } else {
-      const prevImageIndex = fullScreenState.currentIndex - 1;
-      setFullScreenState((prevState)=>{
-        return {
-          ...prevState,
-          currentIndex: prevImageIndex
-        }
-      })
-    }
-  }
+  const handlePrevImage = useCallback(
+    () => {
+      setFullScreenImageLoadedComplete(false);
+      if(fullScreenState.currentIndex === 0){
+        setFullScreenState((prevState)=>{
+          return {
+            ...prevState,
+            currentIndex: visibleImages.length - 1
+      }})
+      } else {
+        const prevImageIndex = fullScreenState.currentIndex - 1;
+        setFullScreenState((prevState)=>{
+          return {
+            ...prevState,
+            currentIndex: prevImageIndex
+          }
+        })
+      }
+    }, [fullScreenState.currentIndex, visibleImages])
 
 
   

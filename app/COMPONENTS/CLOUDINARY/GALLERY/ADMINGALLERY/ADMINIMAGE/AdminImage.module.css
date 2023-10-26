@@ -129,24 +129,19 @@
 .fullScreenImg{
     width: auto;
     height: 90vh;
+    opacity: 0;
 }
 
-.fullscreenNavigation{
-    position: absolute;
-    width: 100vw;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: fit-content;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 50px;
-    box-sizing: border-box;
-    z-index: 6;
+.showFullScreenImage{
+    animation: appearImg 0.25s  ease-in-out forwards;
 }
+
+
 
 .fullscreenNavIcon{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     color: white;
     filter: brightness(30%);
     width: 40px;
@@ -157,6 +152,15 @@
     border:2px solid white;
     box-sizing: border-box;
     padding: 5px;
+    z-index: 6;
+}
+
+.leftArrow{
+    left: 50px;
+}
+
+.rightArrow{
+    right: 50px;
 }
 
 .fullImageLoadingDiv{
@@ -172,6 +176,7 @@
     flex-direction: column;
     color: white;
     gap: 20px;
+    display: none;
 }
 
 .fullScreenLoadingIcon{
@@ -291,9 +296,14 @@
         height: auto;        
         
     }
-    .fullscreenNavigation{
-        padding: 0 20px;
-        
+
+
+    .leftArrow{
+        left: 20px;
+    }
+
+    .rightArrow{
+        right: 20px;
     }
 
     .fullscreenNavIcon{
@@ -341,7 +351,9 @@
         
     }
 
-    .fullscreenNavigation{
+
+
+    .fullscreenNavIcon{
         display: none;
     }
 
@@ -386,7 +398,9 @@
         height: auto;
         
     }
-    .fullscreenNavigation{
+
+
+    .fullscreenNavIcon{
         display: none;
     }
     
@@ -406,7 +420,9 @@
         height: auto;
         
     }
-    .fullscreenNavigation{
+ 
+
+    .fullscreenNavIcon{
         display: none;
     }
     

@@ -1,7 +1,7 @@
 "use client"
 import styles from "./AdminImage.module.css";
 import { CldImage } from 'next-cloudinary';
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { AdminContext } from "@/app/COMPONENTS/CONTEXT/AdminContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faChevronLeft, faChevronRight, faX, faTrash, faSquarePlus, faSquareMinus, faFolder } from "@fortawesome/free-solid-svg-icons";
@@ -81,7 +81,9 @@ const setRowSpan = (image) => {
       }
     }, [touchEnd])
 
-
+    const onFullscreenLoadingComplete = useCallback(() => {
+      setFullScreenImageLoadedComplete(true);
+    }, []);
 
   return (
     <>
@@ -132,14 +134,14 @@ const setRowSpan = (image) => {
     className={styles.fullscreenContainer}>
       <Image
       ref={fullScreenImgRef}
-      className={styles.fullScreenImg}
+      className={`${styles.fullScreenImg} ${fullScreenImageLoadedComplete === true && styles.showFullScreenImage}`}
       alt="full-screen-img"
       src={visibleImages[fullScreenState.currentIndex].url}
       width={0}
       height={0}
-      sizes="100vw"
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       priority={true}
-      onLoadingComplete={()=>setFullScreenImageLoadedComplete(true)}
+      onLoadingComplete={onFullscreenLoadingComplete}
       />
       {fullScreenImageLoadedComplete === false && <>  <div className={styles.fullImageLoadingDiv}>
         <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
@@ -147,13 +149,10 @@ const setRowSpan = (image) => {
       </div>
 
 
-
-      <div className={styles.fullscreenNavigation}>
+<FontAwesomeIcon
+      icon={faChevronLeft} className={`${styles.fullscreenNavIcon} ${styles.leftArrow}`} onClick={handlePrevImage} />
       <FontAwesomeIcon
-      icon={faChevronLeft} className={styles.fullscreenNavIcon} onClick={handlePrevImage} />
-      <FontAwesomeIcon
-      icon={faChevronRight} className={styles.fullscreenNavIcon} onClick={handleNextImage} />
-  </div>
+      icon={faChevronRight} className={`${styles.fullscreenNavIcon} ${styles.rightArrow}`} onClick={handleNextImage} />
   
   </>
       }
