@@ -348,8 +348,13 @@
   .fullScreenImg{
         width: 90%;
         height: auto;        
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation: none
+    }
+    
 
 
 
@@ -396,8 +401,13 @@
     .fullScreenImg{
         width: 70%;
         height: auto;
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation: none;
+    }
+    
 
 
     .fullscreenNavIcon{
@@ -418,8 +428,13 @@
     .fullScreenImg{
         width: 50%;
         height: auto;
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation: none
+    }
+    
  
 
     .fullscreenNavIcon{

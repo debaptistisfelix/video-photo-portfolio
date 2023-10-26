@@ -103,7 +103,7 @@
 .fullScreenImg{
     width: auto;
     height: 90vh;
-   /*  opacity: 0; */
+    opacity: 0;
 }
 
 .showFullScreenImage{
@@ -241,8 +241,13 @@
   .fullScreenImg{
         width: 90%;
         height: auto;        
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation: none;
+    }
+    
 
  
 
@@ -268,8 +273,13 @@
     .fullScreenImg{
         width: 70%;
         height: auto;
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation:none;
+    }
+    
 
 
     .fullscreenNavIcon{
@@ -290,8 +300,13 @@
     .fullScreenImg{
         width: 50%;
         height: auto;
-        
+        opacity: 1;
     }
+
+    .showFullScreenImage{
+        animation: none
+    }
+    
 
     .fullscreenNavIcon{
         display: none;

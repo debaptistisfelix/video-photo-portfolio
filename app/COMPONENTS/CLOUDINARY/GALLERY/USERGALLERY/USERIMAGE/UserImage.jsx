@@ -109,7 +109,7 @@ export default function UserImage({image, visibleImages, openFullScreenMode, clo
     className={styles.fullscreenContainer}>
       <Image
       ref={fullScreenImgRef}
-      className={`${styles.fullScreenImg}`}
+      className={`${styles.fullScreenImg} ${fullScreenImageLoadedComplete === true && styles.showFullScreenImage}`}
       alt="full-screen-img"
       src={visibleImages[fullScreenState.currentIndex].url}
       width={0}
