@@ -8,7 +8,7 @@ import UserImage from './USERIMAGE/UserImage';
 
 export default function UserGallery() {
   //Variables and functions from the AdminContext
-    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete, windowWidth, setWindowWidth,
+    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete, windowWidth,
       handleWindowResize,
       getSizeFromWidth} = useContext(AdminContext);
 
@@ -112,6 +112,8 @@ export default function UserGallery() {
       const moreImages = imagesForUser.slice(currentLengthIndex, currentLengthIndex + imagesPerPage);
       setVisibleImages([...visibleImages, ...moreImages]);
     }
+
+    
 
     const openFullScreenMode = (imageIndex) =>{
       setFullScreenImageLoadedComplete(false);

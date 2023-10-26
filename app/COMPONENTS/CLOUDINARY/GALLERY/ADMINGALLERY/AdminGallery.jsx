@@ -218,6 +218,7 @@ export default function AdminGallery(results) {
     useEffect(()=>{
         handleWindowResize();
         fetchImages();
+        setDisplayedAlbum(null);
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
     },[])
