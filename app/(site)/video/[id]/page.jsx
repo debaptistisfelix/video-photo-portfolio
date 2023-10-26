@@ -1,7 +1,7 @@
 import styles from './page.module.css'
  import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
  import Image from 'next/image';
- import backgroundImg from '@/public/paris.jpg'
+ import backgroundImg from '@/public/parigi.jpeg'
 import PlaylistPage from '@/app/COMPONENTS/VIDEOS/PLAYLISTPAGE/PlaylistPage';
 
  export async function generateMetadata({ params, searchParams }, parent) {

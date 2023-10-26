@@ -3,7 +3,7 @@ import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
 import Image from 'next/image';
 import AdminContent from '@/app/COMPONENTS/CLOUDINARY/ADMINSECTION/AdminContent';
 import cloudinary from 'cloudinary';
-import backgroundImg from '@/public/paris.jpg'
+import backgroundImg from '@/public/parigi.jpeg'
 
 export const metadata = {
   title: 'Simone Capozzi - Dashboard',

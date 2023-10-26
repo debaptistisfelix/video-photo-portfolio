@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faInstagram} from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import LogoImage from '../public/logoHome.png'
-import backgroundImg from '../public/paris.jpg'
+import backgroundImg from '../public/parigi.jpeg'
 
 export default function Home() {
   return (
@@ -17,6 +17,7 @@ export default function Home() {
     
     <section className={styles.content}>
 
+      <div className={styles.logoImgContainer}>
       <Image className={styles.logoImg} src={LogoImage} alt="logo" 
       width={500} height={100} quality={100} priority={true} sizes="(min-width: 520px) 40vw, 90vw" srcSet="
       /_next/image?url=%2F_next%2Fstatic%2Fmedia%2FlogoHome.a7f9ad0c.png&w=640&q=100 640w,
@@ -28,6 +29,9 @@ export default function Home() {
       /_next/image?url=%2F_next%2Fstatic%2Fmedia%2FlogoHome.a7f9ad0c.png&w=2048&q=100 2048w,
       /_next/image?url=%2F_next%2Fstatic%2Fmedia%2FlogoHome.a7f9ad0c.png&w=3840&q=100 3840w
     "/>
+    <Link href="/admin" className={styles.loginLink}></Link>
+      </div>
+      
       
     
       <div className={styles.navigation}>

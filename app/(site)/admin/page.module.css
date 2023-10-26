@@ -13,7 +13,7 @@
 .backgroundImg{
       position: absolute;
         object-fit: cover;
-        filter: brightness(60%);
+        filter: brightness(65%);
         z-index: -1;
 }
   

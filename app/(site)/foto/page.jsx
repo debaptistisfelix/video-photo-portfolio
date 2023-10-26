@@ -3,7 +3,7 @@ import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
 import Image from 'next/image';
 
 import UserGallery from '@/app/COMPONENTS/CLOUDINARY/GALLERY/USERGALLERY/UserGallery';
-import backgroundImg from '@/public/paris.jpg'
+import backgroundImg from '@/public/parigi.jpeg'
 
 export const metadata = {
   title: 'Simone Capozzi - Galleria Foto',

@@ -63,6 +63,8 @@ export default function UserGallery() {
             }
             return 0;
         });
+
+        console.log(sortedArray)
           setImagesForUser(sortedArray);
         setFetchDataStates({
           loading: false,
@@ -188,7 +190,7 @@ export default function UserGallery() {
     </section>
 
    {
-      imagesForUser !== null && fetchDataStates.success === true && visibleImages !== null &&  visibleImages.length < imagesForUser.length &&
+      imagesForUser !== null && fetchDataStates.error !== true && fetchDataStates.loading !== true && visibleImages !== null &&  visibleImages.length < imagesForUser.length &&
       <button className={styles.loadMoreBtn} onClick={handleLoadMore}>LOAD MORE</button>
     }
 

@@ -14,13 +14,13 @@ export async function POST(request) {
     try{
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await prisma.portfolioAdmin.create({
+        const capozzi = await prisma.capozzi.create({
             data: {
                 username,
                 hashedPassword
             }
         });
-        return new Response(JSON.stringify(user), {status: 200});
+        return new Response(JSON.stringify(capozzi), {status: 200});
     }
     catch(error){
         console.log(error)
