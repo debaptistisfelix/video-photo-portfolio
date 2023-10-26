@@ -103,7 +103,7 @@
 .fullScreenImg{
     width: auto;
     height: 90vh;
-    opacity: 0;
+   /*  opacity: 0; */
 }
 
 .showFullScreenImage{

@@ -109,7 +109,7 @@ export default function UserImage({image, visibleImages, openFullScreenMode, clo
     className={styles.fullscreenContainer}>
       <Image
       ref={fullScreenImgRef}
-      className={`${styles.fullScreenImg} ${fullScreenImageLoadedComplete === true && styles.showFullScreenImage}`}
+      className={`${styles.fullScreenImg}`}
       alt="full-screen-img"
       src={visibleImages[fullScreenState.currentIndex].url}
       width={0}
@@ -123,9 +123,6 @@ export default function UserImage({image, visibleImages, openFullScreenMode, clo
       </div> </> }
       </div>
 
-
-
-    
 
   <FontAwesomeIcon
       icon={faChevronLeft} className={`${styles.fullscreenNavIcon} ${styles.leftArrow}`} onClick={handlePrevImage} />
