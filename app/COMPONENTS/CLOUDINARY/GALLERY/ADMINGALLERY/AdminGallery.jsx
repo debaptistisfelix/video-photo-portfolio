@@ -296,23 +296,32 @@ export default function AdminGallery(results) {
             return;
     }
 
-   /*  if(arrayOfCheckeds.length < 4){
-     
-    } else if(arrayOfCheckeds.length === 4){
+    if(arrayOfCheckeds === checkedCheckboxesToRemove){
       if (isChecked) {
-        notify("Puoi selezionare al massimo 4 immagini. Usa Cloudinary per gestire più file", "error")
-      } else {
+        setChecked((prevCheckeds) => [...prevCheckeds, imageId]);
+        clearOtherStates.forEach(clearState => clearState([]));
+    } else {
         setChecked((prevCheckeds) => prevCheckeds.filter((prevChecked) => prevChecked !== imageId));
+    }
+    } else {
+      if(arrayOfCheckeds.length < 4){
+        if (isChecked) {
+          setChecked((prevCheckeds) => [...prevCheckeds, imageId]);
+          clearOtherStates.forEach(clearState => clearState([]));
+      } else {
+          setChecked((prevCheckeds) => prevCheckeds.filter((prevChecked) => prevChecked !== imageId));
       }
+      } else if(arrayOfCheckeds.length === 4){
+        if (isChecked) {
+          notify("Puoi selezionare al massimo 4 immagini. Usa Cloudinary per gestire più file", "error")
+        } else {
+          setChecked((prevCheckeds) => prevCheckeds.filter((prevChecked) => prevChecked !== imageId));
+        }
+  
+      }
+    }
 
-    } */
-
-    if (isChecked) {
-      setChecked((prevCheckeds) => [...prevCheckeds, imageId]);
-      clearOtherStates.forEach(clearState => clearState([]));
-  } else {
-      setChecked((prevCheckeds) => prevCheckeds.filter((prevChecked) => prevChecked !== imageId));
-  }
+   
 };
 
 
