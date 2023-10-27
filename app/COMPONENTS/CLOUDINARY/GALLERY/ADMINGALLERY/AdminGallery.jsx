@@ -211,6 +211,33 @@ export default function AdminGallery(results) {
       }
   }
 
+  const removeAlbumFromCloudinary = async (albumName) => {
+    if(displayedAlbum !== null){
+      setFullscreenLoadingState(true)
+      try {
+       const response = await fetch(`/api/deleteAlbum`,{
+         method:"POST",
+         headers:{
+           "Content-Type":"application/json"
+         },
+         body:JSON.stringify({
+           album: albumName
+         })
+       })
+       const data = await response.json();
+       setFullscreenLoadingState(false)
+       setAlbums((prevAlbums) => {
+          return prevAlbums.filter((prevAlbum) => prevAlbum.name !== albumName)
+       })
+       notify("Album eliminato con successo", "success")
+      } catch (error) {
+       console.log(error)
+       setFullscreenLoadingState(false)
+       notify("Errore durante la rimozione dell'album", "error")
+      }
+    } else { return}
+  }
+
 
   // On page Load fetch images and handle window resize
     useEffect(()=>{
@@ -325,6 +352,8 @@ export default function AdminGallery(results) {
 };
 
 
+console.log(displayedAlbum)
+
 const openFullScreen = (index) => {
   // Check if the clicked index is the same as the current index
  if (index === currentIndex) {
@@ -372,10 +401,6 @@ const openFullScreen = (index) => {
 
 
 
-console.log("IsFullscreenOpen", isFullscreenOpen)
-console.log("currentIndex", currentIndex)
-console.log("isLoading", isLoading)
-console.log("visible image current index:", visibleImages !== null && visibleImages[currentIndex])
 
 
 
@@ -398,6 +423,8 @@ console.log("visible image current index:", visibleImages !== null && visibleIma
       {filteredImages !== null && <h1 className={styles.filteredImagesCount}>
         (Questo album contiene {filteredImages.length} {filteredImages.length > 1 ? "immagini" : "immagine"})
         </h1>}
+
+      {filteredImages !== null && filteredImages.length === 0 && <div onClick={()=>removeAlbumFromCloudinary(displayedAlbum)} className={styles.deleteAlbumBtn}>Cancella Album</div>}  
 
 
 
