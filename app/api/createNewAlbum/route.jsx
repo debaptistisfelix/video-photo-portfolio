@@ -12,7 +12,6 @@ export async function POST(request) {
 
         await cloudinary.v2.api.create_folder(newAlbum)
 
-
         if(imagesToAddToAlbum.length > 1){
             for(let image of imagesToAddToAlbum){
                 await cloudinary.v2.uploader.rename(image, `${newAlbum}/${image}`, function(error, result){
