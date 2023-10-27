@@ -166,12 +166,6 @@ export default function UserGallery() {
 
     
 
-    console.log("IsFullscreenOpen", isFullscreenOpen)
-    console.log("currentIndex", currentIndex)
-    console.log("isLoading", isLoading)
-    console.log("visible image current index:", visibleImages !== null && visibleImages[currentIndex])
-
-
   
 
   return (
