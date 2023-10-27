@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import backgroundImg from '../public/parigi.jpeg'
-import Homepage from './COMPONENTS/HOMEPAGE/homepage'
+import Homepage from './COMPONENTS/HOMEPAGE/Homepage'
 
 export default function Home() {
   return (
