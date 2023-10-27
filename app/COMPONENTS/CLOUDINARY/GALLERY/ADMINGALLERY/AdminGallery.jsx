@@ -327,7 +327,6 @@ export default function AdminGallery(results) {
 };
 
 
-console.log(displayedAlbum)
 
 const openFullScreen = (index) => {
   // Check if the clicked index is the same as the current index

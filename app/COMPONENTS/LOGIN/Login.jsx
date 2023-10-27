@@ -27,7 +27,7 @@ export default function Login() {
             console.log(callback)
             if(callback.error){
                 console.log(callback.error)
-                notify(callback.error, 'error')
+                notify("Credenziali non corrette", 'error')
                 setloading(false)
             } 
 
