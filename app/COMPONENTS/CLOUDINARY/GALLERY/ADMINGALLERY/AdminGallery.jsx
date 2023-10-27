@@ -1,8 +1,10 @@
 "use client"
 import styles from './AdminGallery.module.css';
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext} from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
-import { usePathname } from 'next/navigation';
+import { TouchContext } from "@/app/COMPONENTS/CONTEXT/TouchContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import notify from '@/lib/toastNotify';
 
 import AdminGalleryNav from './ADMINGALLERYNAV/AdminGalleryNav';
@@ -26,7 +28,6 @@ export default function AdminGallery(results) {
 
   const {images,
         setImages,
-        setFullScreenImageLoadedComplete,
         checkedCheckboxesToRemove,
         setCheckedCheckboxesToRemove,
         modalToRemoveImagesIsOpen,
@@ -53,15 +54,14 @@ export default function AdminGallery(results) {
   const [filteredImages, setFilteredImages] = useState(null);
   const imagesPerPage = 30;
   const [currentLength, setCurrentLength] = useState(null);
-  const [fullScreenState, setFullScreenState] = useState({
-    isOpen: false,
-    currentIndex: null
-  });
 
+   // Fullscreen state variables
+   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+   const [currentIndex, setCurrentIndex] = useState(0);
+   const [isLoading, setIsLoading] = useState(false);
 
-  const pathname = usePathname();
-
-
+   // Touch context to handle swipe functionality on mobile screens
+   const { touchEnd, handleTouchStart, handleTouchEnd, handleSwipe} = useContext(TouchContext);
 
   const fetchImages = async () => {
     try {
@@ -155,8 +155,6 @@ export default function AdminGallery(results) {
         notify("Errore durante l'eliminazione delle immagini", "error")
       } else {
         const data = await response.json();
-      console.log(data)
-      
       setImages((prevImages =>{
         return prevImages.filter((prevImage) => !checkedCheckboxesToRemove.includes(prevImage.public_id))
       }))
@@ -244,6 +242,8 @@ export default function AdminGallery(results) {
       }
     },[images])
 
+
+
     useEffect(()=>{
       //Show filtered Images when an album is selected as filter parameter
       if(displayedAlbum !== null){
@@ -266,68 +266,6 @@ export default function AdminGallery(results) {
       const moreImages = images.slice(currentLengthIndex, currentLengthIndex + imagesPerPage);
       setVisibleImages([...visibleImages, ...moreImages]);
     }
-
-
-
-   const openFullScreenMode = (imageIndex) =>{
-    setModalToRemoveImagesIsOpen(false);
-    setFullScreenImageLoadedComplete(false);
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: imageIndex
-      })
-   }
-
-   const closeFullScreenMode = () =>{
-    setFullScreenImageLoadedComplete(false);
-    setFullScreenState({
-   
-      isOpen: false,
-      currentIndex: null
-    })
-   }
-
-
-   const handleNextImage = useCallback(
-    () => {
-      setFullScreenImageLoadedComplete(false);
-      if(fullScreenState.currentIndex === visibleImages.length - 1){
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: 0
-          }
-        })
-      } else {
-        const nextImageIndex = fullScreenState.currentIndex + 1;
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: nextImageIndex
-          }
-        })
-      }
-    },[fullScreenState.currentIndex, visibleImages])
-
-  const handlePrevImage = useCallback(
-    () => {
-      setFullScreenImageLoadedComplete(false);
-      if(fullScreenState.currentIndex === 0){
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: visibleImages.length - 1
-      }})
-      } else {
-        const prevImageIndex = fullScreenState.currentIndex - 1;
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: prevImageIndex
-          }
-        })
-      }
-    }, [fullScreenState.currentIndex, visibleImages])
 
 
 
@@ -363,6 +301,59 @@ export default function AdminGallery(results) {
 };
 
 
+const openFullScreen = (index) => {
+  // Check if the clicked index is the same as the current index
+ if (index === currentIndex) {
+   setIsLoading(false); // Reset loading state
+ } else {
+   setIsLoading(true); // Set loading state for a new image
+   setCurrentIndex(index);
+ }
+ setIsFullscreenOpen(true);
+ };
+
+
+ const closeFullScreen = () => {
+   setIsFullscreenOpen(false);
+ };
+
+ 
+ const handlePrevImage = () => {
+   event.stopPropagation();
+   setCurrentIndex((prevIndex) => (prevIndex === 0 ? visibleImages.length - 1 : prevIndex - 1));
+ };
+
+ const handleNextImage = () => {
+   event.stopPropagation();
+   setCurrentIndex((prevIndex) => (prevIndex === visibleImages.length - 1 ? 0 : prevIndex + 1));
+ };
+
+ 
+ useEffect(() => {
+  if(visibleImages !== null){
+    setIsLoading(true);
+  const image = new Image();
+  image.src = visibleImages[currentIndex].url;
+  image.onload = () => {
+    setIsLoading(false);
+  };
+  }
+}, [currentIndex]);
+
+ useEffect(()=>{
+  if(isFullscreenOpen === true){
+    handleSwipe(handlePrevImage, handleNextImage)
+  }
+}, [touchEnd]) 
+
+
+
+console.log("IsFullscreenOpen", isFullscreenOpen)
+console.log("currentIndex", currentIndex)
+console.log("isLoading", isLoading)
+console.log("visible image current index:", visibleImages !== null && visibleImages[currentIndex])
+
+
 
 
   return (
@@ -384,20 +375,39 @@ export default function AdminGallery(results) {
         (Questo album contiene {filteredImages.length} {filteredImages.length > 1 ? "immagini" : "immagine"})
         </h1>}
 
+
+
       <div className={styles.imagesGallery}
       style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
       >
       {windowWidth !== null && images !== null  && filteredImages !== null && filteredImages.map((image, index) => {
-          return <AdminImage key={index} image={image} visibleImages={filteredImages} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-          handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"} handleCheckboxChange={handleCheckboxChange}  />
+          return <AdminImage key={index} image={image} visibleImages={filteredImages}  handleCheckboxChange={handleCheckboxChange} onClick={() => openFullScreen(index)}  />
       }) }
       {windowWidth !== null && images !== null && visibleImages !== null && filteredImages === null && visibleImages.map((image, index) => {
-        return <AdminImage key={index} image={image} visibleImages={visibleImages} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} isAdminPage={pathname === "/admin"}  
-        handleCheckboxChange={handleCheckboxChange}
+        return <AdminImage key={index} image={image} visibleImages={visibleImages}  handleCheckboxChange={handleCheckboxChange} onClick={() => openFullScreen(index)}
         />
       })}
       </div>
+
+
+      {isFullscreenOpen && (
+  <div className={styles.fullScreenOverlay} >
+    <div onClick={closeFullScreen} className={styles.fullScreenImageContainer}>
+      {isLoading ? (
+        <div className={styles.fullImageLoadingDiv}>
+        <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
+      </div>
+      ) : (
+        <img onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd} src={visibleImages[currentIndex].url} alt={visibleImages[currentIndex].alt} className={styles.fullScreenImage} />
+      )}
+    </div>
+    <FontAwesomeIcon
+      icon={faChevronLeft} className={`${styles.fullscreenNavIcon} ${styles.leftArrow}`} onClick={handlePrevImage} />
+      <FontAwesomeIcon
+      icon={faChevronRight} className={`${styles.fullscreenNavIcon} ${styles.rightArrow}`} onClick={handleNextImage} />
+  </div>
+)}
 
       {galleryLoadingState.loading === true && <div className={styles.loaderContainer}>
       <Loader color="#ffffff" />

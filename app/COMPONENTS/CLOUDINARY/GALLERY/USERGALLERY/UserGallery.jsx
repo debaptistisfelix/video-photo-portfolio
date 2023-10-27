@@ -3,12 +3,15 @@ import styles from './UserGallery.module.css'
 import { useState, useContext, useCallback } from "react";
 import { useEffect } from "react";
 import { AdminContext } from '@/app/COMPONENTS/CONTEXT/AdminContext';
+import { TouchContext } from "@/app/COMPONENTS/CONTEXT/TouchContext";
 import Loader from '@/app/COMPONENTS/LOADER/Loader';
 import UserImage from './USERIMAGE/UserImage';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function UserGallery() {
   //Variables and functions from the AdminContext
-    const {imagesForUser, setImagesForUser, setFullScreenImageLoadedComplete, windowWidth,
+    const {imagesForUser, setImagesForUser,  windowWidth,
       handleWindowResize,
       getSizeFromWidth} = useContext(AdminContext);
 
@@ -16,11 +19,7 @@ export default function UserGallery() {
     const [visibleImages, setVisibleImages] = useState(null);
     const imagesPerPage = 30;
 
-    //State variable to handle full screen mode
-    const [fullScreenState, setFullScreenState] = useState({
-      isOpen: false,
-      currentIndex: null
-    });
+   
 
     //State variable to handle the loading state of the images
     const [fetchDataStates, setFetchDataStates] = useState({
@@ -28,6 +27,13 @@ export default function UserGallery() {
       error:false
     })
 
+    // Fullscreen state variables
+    const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Touch context to handle swipe functionality on mobile screens
+    const { touchEnd, handleTouchStart, handleTouchEnd, handleSwipe} = useContext(TouchContext);
 
 
 
@@ -113,64 +119,57 @@ export default function UserGallery() {
       setVisibleImages([...visibleImages, ...moreImages]);
     }
 
+
+  const openFullScreen = (index) => {
+   // Check if the clicked index is the same as the current index
+  if (index === currentIndex) {
+    setIsLoading(false); // Reset loading state
+  } else {
+    setIsLoading(true); // Set loading state for a new image
+    setCurrentIndex(index);
+  }
+  setIsFullscreenOpen(true);
+  };
+
+
+  const closeFullScreen = () => {
+    setIsFullscreenOpen(false);
+  };
+
+  
+  const handlePrevImage = () => {
+    event.stopPropagation();
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? visibleImages.length - 1 : prevIndex - 1));
+  };
+
+  const handleNextImage = () => {
+    event.stopPropagation();
+    setCurrentIndex((prevIndex) => (prevIndex === visibleImages.length - 1 ? 0 : prevIndex + 1));
+  };
+
+  useEffect(() => {
+    if(visibleImages !== null){
+      setIsLoading(true);
+    const image = new Image();
+    image.src = visibleImages[currentIndex].url;
+    image.onload = () => {
+      setIsLoading(false);
+    };
+    }
+  }, [currentIndex]);
+
+   useEffect(()=>{
+      if(isFullscreenOpen === true){
+        handleSwipe(handlePrevImage, handleNextImage)
+      }
+    }, [touchEnd]) 
+
     
 
-    const openFullScreenMode = (imageIndex) =>{
-      setFullScreenImageLoadedComplete(false);
-      setFullScreenState({
-        isOpen: true,
-        currentIndex: imageIndex
-      })
-   }
-
-   const closeFullScreenMode = () =>{
-    setFullScreenState({
-      isOpen: false,
-      currentIndex: null
-    })
-    setFullScreenImageLoadedComplete(false);
-   }
-
-   const handleNextImage = useCallback(
-    () => {
-      setFullScreenImageLoadedComplete(false);
-      if(fullScreenState.currentIndex === visibleImages.length - 1){
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: 0
-          }
-        })
-      } else {
-        const nextImageIndex = fullScreenState.currentIndex + 1;
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: nextImageIndex
-          }
-        })
-      }
-    },[fullScreenState.currentIndex, visibleImages])
-
-  const handlePrevImage = useCallback(
-    () => {
-      setFullScreenImageLoadedComplete(false);
-      if(fullScreenState.currentIndex === 0){
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: visibleImages.length - 1
-      }})
-      } else {
-        const prevImageIndex = fullScreenState.currentIndex - 1;
-        setFullScreenState((prevState)=>{
-          return {
-            ...prevState,
-            currentIndex: prevImageIndex
-          }
-        })
-      }
-    }, [fullScreenState.currentIndex, visibleImages])
+    console.log("IsFullscreenOpen", isFullscreenOpen)
+    console.log("currentIndex", currentIndex)
+    console.log("isLoading", isLoading)
+    console.log("visible image current index:", visibleImages !== null && visibleImages[currentIndex])
 
 
   
@@ -181,13 +180,34 @@ export default function UserGallery() {
     style={{gridTemplateColumns: `repeat(auto-fit, minmax(${getSizeFromWidth()}px, 1fr))`}}
     >
      {windowWidth !== null && visibleImages !== null && visibleImages.map((image, index) => {
-        return <UserImage key={index} image={image} visibleImages={visibleImages} openFullScreenMode={openFullScreenMode} closeFullScreenMode={closeFullScreenMode} fullScreenState={fullScreenState}
-        handleNextImage={handleNextImage} handlePrevImage={handlePrevImage} />
+        return <UserImage onClick={() => openFullScreen(index)} key={index} image={image} />
       })}
 
      
 
     </section>
+
+    {isFullscreenOpen && (
+  <div className={styles.fullScreenOverlay} >
+    <div onClick={closeFullScreen} className={styles.fullScreenImageContainer}>
+      {isLoading ? (
+        <div className={styles.fullImageLoadingDiv}>
+        <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
+      </div>
+      ) : (
+        <img onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd} src={visibleImages[currentIndex].url} alt={visibleImages[currentIndex].alt} className={styles.fullScreenImage} />
+      )}
+    </div>
+    <FontAwesomeIcon
+      icon={faChevronLeft} className={`${styles.fullscreenNavIcon} ${styles.leftArrow}`} onClick={handlePrevImage} />
+      <FontAwesomeIcon
+      icon={faChevronRight} className={`${styles.fullscreenNavIcon} ${styles.rightArrow}`} onClick={handleNextImage} />
+  </div>
+)}
+
+
+   
 
    {
       imagesForUser !== null && fetchDataStates.error !== true && fetchDataStates.loading !== true && visibleImages !== null &&  visibleImages.length < imagesForUser.length &&

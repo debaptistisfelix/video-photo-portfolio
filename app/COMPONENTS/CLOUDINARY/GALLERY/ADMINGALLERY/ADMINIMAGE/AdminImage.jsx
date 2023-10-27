@@ -1,20 +1,18 @@
 "use client"
 import styles from "./AdminImage.module.css";
 import { CldImage } from 'next-cloudinary';
-import { useState, useEffect, useContext, useRef, useCallback } from "react";
+import { useState, useEffect, useContext,  } from "react";
 import { AdminContext } from "@/app/COMPONENTS/CONTEXT/AdminContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faChevronLeft, faChevronRight, faX, faTrash, faSquarePlus, faSquareMinus, faFolder } from "@fortawesome/free-solid-svg-icons";
-import Image from 'next/image';
-import CheckBox from "@/app/COMPONENTS/CHECKBOX/CheckBox";
-import { TouchContext } from "@/app/COMPONENTS/CONTEXT/TouchContext";
+import { faImage, faX, faTrash, faSquarePlus, faSquareMinus, faFolder } from "@fortawesome/free-solid-svg-icons";
 
-export default function AdminImage({image, visibleImages,  openFullScreenMode, closeFullScreenMode, fullScreenState, handleNextImage, handlePrevImage, isAdminPage, handleCheckboxChange}) {
-    const {images, fullScreenImageLoadedComplete, setFullScreenImageLoadedComplete, checkedCheckboxesToRemove, checkedCheckboxesToAddToAlbum, checkedCheckboxToRemoveFromAlbum, windowWidth, getSizeFromWidth  } = useContext(AdminContext);
+import CheckBox from "@/app/COMPONENTS/CHECKBOX/CheckBox";
+
+
+export default function AdminImage({onClick,image, visibleImages, handleCheckboxChange}) {
+    const {images, checkedCheckboxesToRemove, checkedCheckboxesToAddToAlbum, checkedCheckboxToRemoveFromAlbum, windowWidth, getSizeFromWidth  } = useContext(AdminContext);
     const [imageLoadedComplete, setImageLoadedComplete] = useState(false);
-    const fullScreenImgRef = useRef(null);
-    const fullScreenBlackContainerRef = useRef(null);
-    const { touchEnd, handleTouchStart, handleTouchEnd, handleSwipe} = useContext(TouchContext);
+
 
       //Image resize functionality
   const [photoSpans, setPhotoSpans] = useState(250);
@@ -50,49 +48,22 @@ const setRowSpan = (image) => {
     const addToAlbumCheckBoxLabel = <FontAwesomeIcon icon={isCheckedToAddToAlbum === true ? faX : faSquarePlus} className={styles.checkboxIcon} />
     const removeFromAlbumCheckboxLabel = <FontAwesomeIcon icon={isCheckedToRemoveFromAlbum === true ? faX : faSquareMinus} className={styles.checkboxIcon} />
 
-   
-    
-
-  const imageIndex = visibleImages.indexOf(image);
-
-    useEffect(()=>{
-      // Close full screen mode if user clicks outside of image
-      const handleClickOutsideFullScreenImage = (e) => {
-        if(fullScreenImgRef.current && !fullScreenImgRef.current.contains(e.target) && fullScreenBlackContainerRef.current.contains(e.target)){
-          closeFullScreenMode();
-        }
-      }
-
-      document.addEventListener("click", handleClickOutsideFullScreenImage);
-
-      return () => document.removeEventListener("click", handleClickOutsideFullScreenImage);
-    },[])
-
+  
 
     useEffect(()=>{
       //recalculate row span when window width or images change
         setRowSpan(image);
     },[windowWidth, images, visibleImages])
 
-    // Swipe functionality
-    useEffect(()=>{
-      if(fullScreenState.isOpen === true){
-        handleSwipe(handlePrevImage, handleNextImage)
-      }
-    }, [touchEnd])
-
-    const onFullscreenLoadingComplete = useCallback(() => {
-      setFullScreenImageLoadedComplete(true);
-    }, []);
+  
 
   return (
-    <>
     <div
  
     style={{ gridRow: `span ${photoSpans}`, width: `${getSizeFromWidth()}px` }}
     className={styles.imgContainer}>
         <CldImage
-        onClick={() =>{openFullScreenMode(imageIndex)}}
+          onClick={onClick}
         className={`${styles.image} ${imageLoadedComplete === true && styles.showImage}`}
         width={image.width}
         height={image.height}
@@ -116,48 +87,10 @@ const setRowSpan = (image) => {
       {isCheckedToAddToAlbum === true && <div className={styles.greenFilter}></div>}
       {isCheckedToRemoveFromAlbum === true && <div className={styles.yellowFilter}></div>}
      
-      {imageLoadedComplete === true && isAdminPage === true && <div className={styles.checkboxContainer}>
+      {imageLoadedComplete === true &&  <div className={styles.checkboxContainer}>
         {image.public_id.includes("/") ? <CheckBox label={removeFromAlbumCheckboxLabel} onChange={handleCheckboxChangeToRemoveFromAlbum} checked={isCheckedToRemoveFromAlbum} /> :
       <CheckBox label={addToAlbumCheckBoxLabel} onChange={handleCheckboxChangeToAddToAlbum} checked={isCheckedToAddToAlbum} />}
       <CheckBox label={removeCheckBoxLabel} onChange={handleCheckboxChangeToRemove} checked={isCheckedToRemove} /></div>}
     </div>
-
-
-
-  
-
-    {fullScreenState.isOpen === true &&  <>
-      <div
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    ref={fullScreenBlackContainerRef}
-    className={styles.fullscreenContainer}>
-      <Image
-      ref={fullScreenImgRef}
-      className={`${styles.fullScreenImg} ${fullScreenImageLoadedComplete === true && styles.showFullScreenImage}`}
-      alt="full-screen-img"
-      src={visibleImages[fullScreenState.currentIndex].url}
-      width={0}
-      height={0}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      priority={true}
-      onLoadingComplete={onFullscreenLoadingComplete}
-      />
-      {fullScreenImageLoadedComplete === false && <>  <div className={styles.fullImageLoadingDiv}>
-        <FontAwesomeIcon icon={faImage} className={styles.fullScreenLoadingIcon} />
-      </div> </> }
-      </div>
-
-
-<FontAwesomeIcon
-      icon={faChevronLeft} className={`${styles.fullscreenNavIcon} ${styles.leftArrow}`} onClick={handlePrevImage} />
-      <FontAwesomeIcon
-      icon={faChevronRight} className={`${styles.fullscreenNavIcon} ${styles.rightArrow}`} onClick={handleNextImage} />
-  
-  </>
-      }
-   
-    </>
-
   )
 }

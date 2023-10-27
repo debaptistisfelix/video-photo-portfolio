@@ -63,7 +63,7 @@ export default function Navbar() {
 <Link href="/foto" className={styles.navLink}>Foto</Link>
 {status === "authenticated" && <div onClick={logOut} className={styles.navLink}>Log Out</div>}
 {status === "authenticated" && <Link href="/admin">
-<Image src={ProfilePic} alt="profilepic" className={styles.profilePic} width={35} height={35} placeholder='blur' />
+<Image src={ProfilePic} alt="profilepic" className={styles.profilePic} width={35} height={35}  />
     </Link>}
 </div>
 

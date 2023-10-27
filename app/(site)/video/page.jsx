@@ -1,7 +1,7 @@
 import styles from './page.module.css'
  import Navbar from '@/app/COMPONENTS/NAVBAR/Navbar';
  import Image from 'next/image';
- import backgroundImg from '@/public/parigi.jpeg'
+ import backgroundImg from '@/public/sfocato.jpg'
  import VideoSection from '@/app/COMPONENTS/VIDEOS/VIDEOSECTION/VideoSection';
 
  export const metadata = {

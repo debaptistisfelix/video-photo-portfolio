@@ -107,90 +107,6 @@
     }
 }
 
-.fullscreenContainer{
-    position: fixed;;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    min-width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-    z-index: 5;
-    background-color: rgba(0,0,0,0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-y: scroll;
-
-}
-
-.fullScreenImg{
-    width: auto;
-    height: 90vh;
-    opacity: 0;
-}
-
-.showFullScreenImage{
-    animation: appearImg 0.25s  ease-in-out forwards;
-}
-
-
-
-.fullscreenNavIcon{
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
-    filter: brightness(30%);
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    border-radius: 50%;
-    border:2px solid white;
-    box-sizing: border-box;
-    padding: 5px;
-    z-index: 6;
-}
-
-.leftArrow{
-    left: 50px;
-}
-
-.rightArrow{
-    right: 50px;
-}
-
-.fullImageLoadingDiv{
-    background-color: black;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: white;
-    gap: 20px;
-    display: none;
-}
-
-.fullScreenLoadingIcon{
-    width: 50px;
-    height: 50px;
-    animation: pulse 1s infinite ease-in-out;
-}
-
-.fullScreenLoadingText{
-    font-weight: 400;
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: white;
-}
 
 
 .redFilter{
@@ -261,15 +177,6 @@
 
 
 @media (hover:hover) and (pointer:fine){
-
-
-  
-
-    
-
-    .fullscreenNavIcon:hover{
-        filter:brightness(85%);
-    }
     .checkboxIcon:hover{
         border: 1px solid white;
       }
@@ -289,27 +196,6 @@
     .albumTagName{
         font-size: 12px;
         font-weight: 600;
-    }
-
-    .fullScreenImg{
-        width: 90%;
-        height: auto;        
-        
-    }
-
-
-    .leftArrow{
-        left: 20px;
-    }
-
-    .rightArrow{
-        right: 20px;
-    }
-
-    .fullscreenNavIcon{
-        width: 25px;
-        height: 25px;
-        padding: 3px;
     }
 }
 
@@ -345,35 +231,6 @@
      
     }
 
-  .fullScreenImg{
-        width: 90%;
-        height: auto;        
-        opacity: 1;
-    }
-
-    .showFullScreenImage{
-        animation: none
-    }
-    
-
-
-
-    .fullscreenNavIcon{
-        display: none;
-    }
-
-  .fullImageLoadingDiv{
-    background-color: rgba(0,0,0,0.75);
-  }
-
-  .fullScreenLoadingIcon{
-    opacity: 0.5;
-  }
-
-    
-    .fullScreenLoadingText{
-        font-size: clamp(14px, 4vw + 0.12rem, 18px);
-    }
     .checkboxIcon{
         width: 24px;
         height: 24px;
@@ -398,57 +255,9 @@
         font-size: 12px;
         font-weight: 600;
     }
-    .fullScreenImg{
-        width: 70%;
-        height: auto;
-        opacity: 1;
-    }
-
-    .showFullScreenImage{
-        animation: none;
-    }
-    
-
-
-    .fullscreenNavIcon{
-        display: none;
-    }
-    
-  .fullImageLoadingDiv{
-    background-color: rgba(0,0,0,0.75);
-  }
-
-  .fullScreenLoadingIcon{
-    opacity: 0.5;
-  }
+   
 }
 
-
-@media (min-width:501px) and (hover:none) and (pointer: coarse) and (orientation: landscape) {
-    .fullScreenImg{
-        width: 50%;
-        height: auto;
-        opacity: 1;
-    }
-
-    .showFullScreenImage{
-        animation: none
-    }
-    
- 
-
-    .fullscreenNavIcon{
-        display: none;
-    }
-    
-  .fullImageLoadingDiv{
-    background-color: rgba(0,0,0,0.75);
-  }
-
-  .fullScreenLoadingIcon{
-    opacity: 0.5;
-  }
-}
 
 @media (min-width:1023px) and (hover:none) and (pointer:coarser){
     .checkboxContainer{
