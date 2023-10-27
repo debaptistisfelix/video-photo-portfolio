@@ -12,7 +12,7 @@ import {Montserrat } from 'next/font/google'
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function Login() {
-    const [data, setData] = useState({username: '', password: ''})
+    const [data, setData] = useState({username: 'admin', password: 'admin'})
     const [loading, setloading] = useState(false)
     const router = useRouter()
 
